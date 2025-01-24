@@ -4,10 +4,10 @@ import com.callv2.user.domain.ValueObject;
 import com.callv2.user.domain.validation.Error;
 import com.callv2.user.domain.validation.ValidationHandler;
 
-public record MemberUsername(String value) implements ValueObject {
+public record Username(String value) implements ValueObject {
 
-    public static MemberUsername of(final String username) {
-        return new MemberUsername(username);
+    public static Username of(final String username) {
+        return new Username(username);
     }
 
     @Override

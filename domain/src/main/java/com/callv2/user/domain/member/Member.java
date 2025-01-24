@@ -5,9 +5,9 @@ import com.callv2.user.domain.validation.ValidationHandler;
 
 public class Member extends AggregateRoot<MemberID> {
 
-    private MemberUsername username;
-    private MemberEmail email;
-    private MemberNickname nickname;
+    private Username username;
+    private Email email;
+    private Nickname nickname;
 
     private Member(final MemberID anID) {
         super(anID);
@@ -18,15 +18,15 @@ public class Member extends AggregateRoot<MemberID> {
         new MemberValidator(this, handler).validate();
     }
 
-    public MemberUsername getUsername() {
+    public Username getUsername() {
         return username;
     }
 
-    public MemberEmail getEmail() {
+    public Email getEmail() {
         return email;
     }
 
-    public MemberNickname getNickname() {
+    public Nickname getNickname() {
         return nickname;
     }
 
