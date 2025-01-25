@@ -29,7 +29,7 @@ public class DefaultCreateMemberUseCase extends CreateMemberUseCase {
         final Password password = Password.of(anIn.password());
 
         final PreMember preMember = PreMember.with(username, email, password);
-        Notification notification = Notification.create();
+        final Notification notification = Notification.create();
 
         nickname.validate(notification);
         preMember.validate(notification);
