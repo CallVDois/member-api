@@ -12,7 +12,6 @@ import com.callv2.user.domain.member.Nickname;
 import com.callv2.user.domain.member.PreMember;
 import com.callv2.user.domain.member.Username;
 import com.callv2.user.infrastructure.keycloak.mapper.KeycloakUserMapper;
-import com.callv2.user.infrastructure.keycloak.model.UserRepresentation;
 import com.callv2.user.infrastructure.keycloak.service.KeycloakUserService;
 import com.callv2.user.infrastructure.member.persistence.MemberJpaEntity;
 import com.callv2.user.infrastructure.member.persistence.MemberJpaRepository;
@@ -35,18 +34,22 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public Member create(PreMember preMember) {
-        final UserRepresentation userRepresentation = keycloakUserMapper.toUserRepresentation(preMember);
 
-        final String memberId = this.keycloakUserService.createUser(userRepresentation);
+        final String memberId = this.keycloakUserService.createUser(keycloakUserMapper.toUserRepresentation(preMember));
 
-        return memberJpaRepository
-                .save(MemberJpaEntity.fromDomain(
-                        Member.create(
-                                MemberID.of(memberId),
-                                preMember.username(),
-                                preMember.email(),
-                                Nickname.of(preMember.username().value()))))
-                .toDomain();
+        try {
+            return memberJpaRepository
+                    .save(MemberJpaEntity.fromDomain(
+                            Member.create(
+                                    MemberID.of(memberId),
+                                    preMember.username(),
+                                    preMember.email(),
+                                    Nickname.of(preMember.username().value()))))
+                    .toDomain();
+        } catch (Exception e) {
+            this.keycloakUserService.deleteUser(memberId);
+            throw e;
+        }
     }
 
     @Override

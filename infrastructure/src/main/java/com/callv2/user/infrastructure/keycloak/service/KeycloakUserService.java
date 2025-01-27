@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
 
@@ -35,7 +34,6 @@ public class KeycloakUserService {
         this.realm = realm;
     }
 
-    @Transactional
     public String createUser(final UserRepresentation userRepresentation) {
         final ResponseEntity<Void> response = onStatus(client.post()
                 .uri("/admin/realms/{realm}/users", realm)
@@ -51,6 +49,14 @@ public class KeycloakUserService {
                 .orElseThrow(() -> InternalServerError.from("User creation failed"));
 
         return userId;
+    }
+
+    public void deleteUser(final String userId) {
+        onStatus(client.delete()
+                .uri("/admin/realms/{realm}/users/{userId}", realm, userId)
+                .retrieve())
+                .toBodilessEntity()
+                .block();
     }
 
     private ResponseSpec onStatus(final ResponseSpec responseSpec) {
