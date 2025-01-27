@@ -1,0 +1,7 @@
+keycloak:
+  realm: callv2
+  host: http://localhost:8090
+  client:
+    user-api:
+      client-id: client-id
+      client-secret: client-secret

@@ -12,17 +12,17 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8090/realms/callv2
+          issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
       client:
         registration:
           keycloak:
-            client-id: client-id
-            client-secret: client-secret
+            client-id: ${keycloak.client.user-api.client-id}
+            client-secret: ${keycloak.client.user-api.client-secret}
             authorization-grant-type: client_credentials
             scope: openid
         provider:
           keycloak:
-            token-uri: http://localhost:8090/realms/callv2/protocol/openid-connect/token
+            token-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/token
   datasource:
     driver-class-name: org.h2.Driver
     username: root
@@ -30,7 +30,7 @@ spring:
     url: jdbc:h2:file:./member;DATABASE_TO_LOWER=TRUE
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     show-sql: true
   h2:
     console:

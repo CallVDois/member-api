@@ -24,15 +24,19 @@ import reactor.core.publisher.Mono;
 public class KeycloakUserService {
 
     private final WebClient client;
+    private final String realm;
 
     private final Pattern USER_ID_LOCATION_PATTERN = Pattern.compile("(?<=(.*\\/users\\/)).*");
 
-    public KeycloakUserService(final WebClient client) {
+    public KeycloakUserService(
+            final WebClient client,
+            final String realm) {
         this.client = client;
+        this.realm = realm;
     }
 
     @Transactional
-    public String createUser(final String realm, final UserRepresentation userRepresentation) {
+    public String createUser(final UserRepresentation userRepresentation) {
         final ResponseEntity<Void> response = onStatus(client.post()
                 .uri("/admin/realms/{realm}/users", realm)
                 .bodyValue(userRepresentation)
