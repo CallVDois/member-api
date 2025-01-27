@@ -1,4 +1,4 @@
-package com.callv2.user.infrastructure.keycloak.excecption;
+package com.callv2.user.infrastructure.keycloak.exception;
 
 import org.springframework.http.HttpStatus;
 

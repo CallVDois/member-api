@@ -9,7 +9,7 @@ import com.callv2.user.domain.exception.DomainException;
 import com.callv2.user.domain.exception.InternalErrorException;
 import com.callv2.user.domain.exception.NotFoundException;
 import com.callv2.user.domain.exception.ValidationException;
-import com.callv2.user.infrastructure.keycloak.excecption.KeycloakException;
+import com.callv2.user.infrastructure.keycloak.exception.KeycloakException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

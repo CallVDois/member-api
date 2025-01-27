@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
 
-import com.callv2.user.infrastructure.keycloak.excecption.BadRequestException;
-import com.callv2.user.infrastructure.keycloak.excecption.ForbiddenException;
-import com.callv2.user.infrastructure.keycloak.excecption.InternalServerError;
-import com.callv2.user.infrastructure.keycloak.excecption.UnauthorizedException;
-import com.callv2.user.infrastructure.keycloak.excecption.UserAlreadyExistsException;
+import com.callv2.user.infrastructure.keycloak.exception.BadRequestException;
+import com.callv2.user.infrastructure.keycloak.exception.ForbiddenException;
+import com.callv2.user.infrastructure.keycloak.exception.InternalServerError;
+import com.callv2.user.infrastructure.keycloak.exception.UnauthorizedException;
+import com.callv2.user.infrastructure.keycloak.exception.UserAlreadyExistsException;
 import com.callv2.user.infrastructure.keycloak.model.Error;
 import com.callv2.user.infrastructure.keycloak.model.ErrorRepresentation;
 import com.callv2.user.infrastructure.keycloak.model.UserRepresentation;
