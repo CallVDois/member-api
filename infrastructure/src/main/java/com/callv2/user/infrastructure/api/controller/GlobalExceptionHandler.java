@@ -9,6 +9,7 @@ import com.callv2.user.domain.exception.DomainException;
 import com.callv2.user.domain.exception.InternalErrorException;
 import com.callv2.user.domain.exception.NotFoundException;
 import com.callv2.user.domain.exception.ValidationException;
+import com.callv2.user.infrastructure.keycloak.excecption.KeycloakException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -42,6 +43,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handle(final InvalidDataAccessApiUsageException ex) {
         return ResponseEntity.badRequest()
                 .body(ApiError.with("Invalid Data Access Api Usage [%s]".formatted(ex.getMessage())));
+    }
+
+    @ExceptionHandler(value = KeycloakException.class)
+    public ResponseEntity<ApiError> handle(final KeycloakException ex) {
+        return ResponseEntity.status(ex.status()).body(ApiError.with(ex.getMessage()));
     }
 
 }
