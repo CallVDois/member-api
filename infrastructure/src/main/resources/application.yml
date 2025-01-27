@@ -12,7 +12,7 @@ spring:
     driver-class-name: org.h2.Driver
     username: root
     password: 123456
-    url: jdbc:h2:member:./drive;DATABASE_TO_LOWER=TRUE
+    url: jdbc:h2:file:./member;DATABASE_TO_LOWER=TRUE
   jpa:
     hibernate:
       ddl-auto: none
