@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import com.callv2.user.domain.exception.DomainException;
 import com.callv2.user.domain.member.Email;
+import com.callv2.user.domain.member.Member;
 import com.callv2.user.domain.member.MemberGateway;
 import com.callv2.user.domain.member.Nickname;
 import com.callv2.user.domain.member.Password;
@@ -20,7 +21,7 @@ public class DefaultCreateMemberUseCase extends CreateMemberUseCase {
     }
 
     @Override
-    public void execute(final CreateMemberInput anIn) {
+    public CreateMemberOutput execute(final CreateMemberInput anIn) {
 
         final Username username = Username.of(anIn.username());
         final Nickname nickname = Nickname.of(anIn.username());
@@ -37,10 +38,12 @@ public class DefaultCreateMemberUseCase extends CreateMemberUseCase {
         if (notification.hasError())
             throw DomainException.with(notification.getErrors());
 
-        notification.valdiate(() -> this.memberGateway.create(preMember));
+        final Member member = notification.valdiate(() -> this.memberGateway.create(preMember));
 
         if (notification.hasError())
             throw DomainException.with(notification.getErrors());
+
+        return CreateMemberOutput.with(member.getId().getValue());
     }
 
 }

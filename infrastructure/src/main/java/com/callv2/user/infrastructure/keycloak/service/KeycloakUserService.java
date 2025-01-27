@@ -20,13 +20,13 @@ import com.callv2.user.infrastructure.webclient.WebClientExceptionHandler;
 
 import reactor.core.publisher.Mono;
 
-public class UserService {
+public class KeycloakUserService {
 
     private final WebClient client;
 
     private final Pattern USER_ID_LOCATION_PATTERN = Pattern.compile("(?<=(.*\\/users\\/)).*");
 
-    public UserService(final WebClient client) {
+    public KeycloakUserService(final WebClient client) {
         this.client = client;
     }
 

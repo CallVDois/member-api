@@ -7,23 +7,46 @@ import org.springframework.stereotype.Component;
 import com.callv2.user.domain.member.Email;
 import com.callv2.user.domain.member.Member;
 import com.callv2.user.domain.member.MemberGateway;
+import com.callv2.user.domain.member.MemberID;
+import com.callv2.user.domain.member.Nickname;
 import com.callv2.user.domain.member.PreMember;
 import com.callv2.user.domain.member.Username;
+import com.callv2.user.infrastructure.keycloak.mapper.KeycloakUserMapper;
+import com.callv2.user.infrastructure.keycloak.model.UserRepresentation;
+import com.callv2.user.infrastructure.keycloak.service.KeycloakUserService;
+import com.callv2.user.infrastructure.member.persistence.MemberJpaEntity;
 import com.callv2.user.infrastructure.member.persistence.MemberJpaRepository;
 
 @Component
 public class DefaultMemberGateway implements MemberGateway {
 
     private final MemberJpaRepository memberJpaRepository;
+    private final KeycloakUserService keycloakUserService;
+    private final KeycloakUserMapper keycloakUserMapper;
 
-    public DefaultMemberGateway(final MemberJpaRepository memberJpaRepository) {
+    public DefaultMemberGateway(
+            final MemberJpaRepository memberJpaRepository,
+            final KeycloakUserService keycloakUserService,
+            final KeycloakUserMapper keycloakUserMapper) {
         this.memberJpaRepository = memberJpaRepository;
+        this.keycloakUserService = keycloakUserService;
+        this.keycloakUserMapper = keycloakUserMapper;
     }
 
     @Override
     public Member create(PreMember preMember) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
+        final UserRepresentation userRepresentation = keycloakUserMapper.toUserRepresentation(preMember);
+
+        final String memberId = this.keycloakUserService.createUser(null, null, userRepresentation);
+
+        return memberJpaRepository
+                .save(MemberJpaEntity.fromDomain(
+                        Member.create(
+                                MemberID.of(memberId),
+                                preMember.username(),
+                                preMember.email(),
+                                Nickname.of(preMember.username().value()))))
+                .toDomain();
     }
 
     @Override

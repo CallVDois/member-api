@@ -29,6 +29,17 @@ public class Member extends AggregateRoot<MemberID> {
         this.updatedAt = updatedAt;
     }
 
+    public static Member create(
+            final MemberID id,
+            final Username username,
+            final Email email,
+            final Nickname nickname) {
+
+        final Instant now = Instant.now();
+
+        return new Member(id, username, email, nickname, now, now);
+    }
+
     public static Member with(
             final MemberID id,
             final Username username,

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.callv2.user.infrastructure.member.model.CreateMemberRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Members")
@@ -17,6 +19,9 @@ public interface MemberAPI {
 
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
     @Operation(summary = "Create member account", description = "This method create a new member account")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Created successfuly")
+    })
     ResponseEntity<Void> create(@RequestBody CreateMemberRequest request);
 
 }
