@@ -37,7 +37,7 @@ public class DefaultMemberGateway implements MemberGateway {
     public Member create(PreMember preMember) {
         final UserRepresentation userRepresentation = keycloakUserMapper.toUserRepresentation(preMember);
 
-        final String memberId = this.keycloakUserService.createUser(null, null, userRepresentation);
+        final String memberId = this.keycloakUserService.createUser("callv2", userRepresentation);
 
         return memberJpaRepository
                 .save(MemberJpaEntity.fromDomain(

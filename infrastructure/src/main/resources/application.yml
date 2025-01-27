@@ -8,6 +8,21 @@ server:
     min-response-size: 1024
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8090/realms/callv2
+      client:
+        registration:
+          keycloak:
+            client-id: client-id
+            client-secret: client-secret
+            authorization-grant-type: client_credentials
+            scope: openid
+        provider:
+          keycloak:
+            token-uri: http://localhost:8090/realms/callv2/protocol/openid-connect/token
   datasource:
     driver-class-name: org.h2.Driver
     username: root

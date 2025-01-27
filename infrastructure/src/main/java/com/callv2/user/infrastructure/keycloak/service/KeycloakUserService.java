@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
 
@@ -30,10 +31,10 @@ public class KeycloakUserService {
         this.client = client;
     }
 
-    public String createUser(final String token, final String realm, final UserRepresentation userRepresentation) {
+    @Transactional
+    public String createUser(final String realm, final UserRepresentation userRepresentation) {
         final ResponseEntity<Void> response = onStatus(client.post()
                 .uri("/admin/realms/{realm}/users", realm)
-                .header("Authorization", "Bearer " + token)
                 .bodyValue(userRepresentation)
                 .retrieve())
                 .toBodilessEntity()
