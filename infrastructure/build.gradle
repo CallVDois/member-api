@@ -51,13 +51,9 @@ java {
     }
 }
 
-tasks.withType(JavaCompile) {
-    options.annotationProcessorPath = configurations.annotationProcessor
+compileJava {
     options.compilerArgs += [
-            "-Xlint:all", 
-            '-Amapstruct.suppressGeneratorTimestamp=true',
-            '-Amapstruct.defaultComponentModel=spring',
-            '-Amapstruct.verbose=true'
+            '-Amapstruct.defaultComponentModel=spring'
     ]
 }
 
