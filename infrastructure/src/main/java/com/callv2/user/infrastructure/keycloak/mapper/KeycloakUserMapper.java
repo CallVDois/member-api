@@ -10,7 +10,7 @@ import com.callv2.user.infrastructure.keycloak.model.CredentialRepresentation;
 import com.callv2.user.infrastructure.keycloak.model.UserRepresentation;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface KeycloakUserMapper {
 
     @Mapping(target = "username", source = "username.value")
