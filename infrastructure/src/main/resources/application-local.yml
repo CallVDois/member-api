@@ -3,5 +3,5 @@ keycloak:
   host: http://localhost:8090
   client:
     user-api:
-      client-id: client-id
-      client-secret: client-secret
+      client-id: user-api
+      client-secret: local-client-secret
