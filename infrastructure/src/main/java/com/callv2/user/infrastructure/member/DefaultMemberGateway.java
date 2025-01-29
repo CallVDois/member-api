@@ -2,6 +2,7 @@ package com.callv2.user.infrastructure.member;
 
 import java.util.Optional;
 
+import com.callv2.user.domain.exception.NotFoundException;
 import com.callv2.user.domain.member.Email;
 import com.callv2.user.domain.member.Member;
 import com.callv2.user.domain.member.MemberGateway;
@@ -73,7 +74,11 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public Member update(final Member member) {
-        tokenKeycloakUserService.updateUser(keycloakUserMapper.toUserRepresentation(member), member.getId().getValue());
+
+        if (performKeycloakUpdate(member))
+            this.tokenKeycloakUserService
+                    .updateUser(keycloakUserMapper.toUserRepresentation(member), member.getId().getValue());
+
         return save(member);
     }
 
@@ -81,6 +86,17 @@ public class DefaultMemberGateway implements MemberGateway {
         return memberJpaRepository
                 .save(MemberJpaEntity.fromDomain(member))
                 .toDomain();
+    }
+
+    private boolean performKeycloakUpdate(final Member member) {
+        final MemberJpaEntity memberJpa = this.memberJpaRepository
+                .findById(member.getId().getValue())
+                .orElseThrow(() -> NotFoundException.with(Member.class, member.getId().getValue()));
+
+        return !(memberJpa.getEmail().equals(member.getEmail().value())
+                && memberJpa.getUsername().equals(member.getUsername().value())
+                && memberJpa.getActive() == member.isActive());
+
     }
 
 }
