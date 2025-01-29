@@ -20,7 +20,7 @@ public class DefaultCreateMemberUseCase extends CreateMemberUseCase {
     }
 
     @Override
-    public void execute(final CreateMemberInput anIn) {
+    public CreateMemberOutput execute(final CreateMemberInput anIn) {
 
         final Username username = Username.of(anIn.username());
         final Nickname nickname = Nickname.of(anIn.username());
@@ -37,10 +37,7 @@ public class DefaultCreateMemberUseCase extends CreateMemberUseCase {
         if (notification.hasError())
             throw DomainException.with(notification.getErrors());
 
-        notification.valdiate(() -> this.memberGateway.create(preMember));
-
-        if (notification.hasError())
-            throw DomainException.with(notification.getErrors());
+        return CreateMemberOutput.with(this.memberGateway.create(preMember).getId().getValue());
     }
 
 }

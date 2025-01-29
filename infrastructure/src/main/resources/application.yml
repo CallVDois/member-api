@@ -1,0 +1,38 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/json
+    min-response-size: 1024
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
+      client:
+        registration:
+          keycloak:
+            client-id: ${keycloak.client.user-api.client-id}
+            client-secret: ${keycloak.client.user-api.client-secret}
+            authorization-grant-type: client_credentials
+            scope: openid
+        provider:
+          keycloak:
+            token-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/token
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${postgres.username}
+    password: ${postgres.password}
+    url: jdbc:postgresql://${postgres.host}:${postgres.port}/${postgres.database}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2
