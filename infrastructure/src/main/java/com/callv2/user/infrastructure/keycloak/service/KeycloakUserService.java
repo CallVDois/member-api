@@ -51,6 +51,15 @@ public class KeycloakUserService {
         return userId;
     }
 
+    public void updateUser(final UserRepresentation userRepresentation, final String userId) {
+        onStatus(client.put()
+                .uri("/admin/realms/{realm}/users/{userId}", realm, userId)
+                .bodyValue(userRepresentation)
+                .retrieve())
+                .toBodilessEntity()
+                .block();
+    }
+
     public void deleteUser(final String userId) {
         onStatus(client.delete()
                 .uri("/admin/realms/{realm}/users/{userId}", realm, userId)

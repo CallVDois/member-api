@@ -8,6 +8,7 @@ import com.callv2.user.domain.member.MemberID;
 import com.callv2.user.domain.member.Nickname;
 import com.callv2.user.domain.member.Username;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -25,6 +26,9 @@ public class MemberJpaEntity {
 
     private String email;
 
+    @Column(nullable = false)
+    private Boolean active;
+
     private Instant createdAt;
 
     private Instant updatedAt;
@@ -37,24 +41,27 @@ public class MemberJpaEntity {
             final String username,
             final String nickname,
             final String email,
+            final Boolean active,
             final Instant createdAt,
             final Instant updatedAt) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
         this.email = email;
+        this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public Member toDomain() {
         return Member.with(
-                MemberID.of(id),
-                Username.of(username),
-                Email.of(email),
-                Nickname.of(nickname),
-                createdAt,
-                updatedAt);
+                MemberID.of(getId()),
+                Username.of(getUsername()),
+                Email.of(getEmail()),
+                Nickname.of(getNickname()),
+                getActive(),
+                getCreatedAt(),
+                getUpdatedAt());
     }
 
     public static MemberJpaEntity fromDomain(final Member member) {
@@ -63,6 +70,7 @@ public class MemberJpaEntity {
                 member.getUsername().value(),
                 member.getNickname().value(),
                 member.getEmail().value(),
+                member.isActive(),
                 member.getCreatedAt(),
                 member.getUpdatedAt());
     }
@@ -97,6 +105,14 @@ public class MemberJpaEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean enable) {
+        this.active = enable;
     }
 
     public Instant getCreatedAt() {

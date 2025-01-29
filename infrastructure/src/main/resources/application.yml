@@ -24,13 +24,13 @@ spring:
           keycloak:
             token-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/token
   datasource:
-    driver-class-name: org.h2.Driver
-    username: root
-    password: 123456
-    url: jdbc:h2:file:./member;DATABASE_TO_LOWER=TRUE
+    driver-class-name: org.postgresql.Driver
+    username: ${postgres.username}
+    password: ${postgres.password}
+    url: jdbc:postgresql://${postgres.host}:${postgres.port}/${postgres.database}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
   h2:
     console:
