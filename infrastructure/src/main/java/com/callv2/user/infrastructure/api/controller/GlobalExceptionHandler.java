@@ -9,7 +9,8 @@ import com.callv2.user.domain.exception.DomainException;
 import com.callv2.user.domain.exception.InternalErrorException;
 import com.callv2.user.domain.exception.NotFoundException;
 import com.callv2.user.domain.exception.ValidationException;
-import com.callv2.user.infrastructure.keycloak.exception.KeycloakException;
+import com.callv2.user.infrastructure.exception.HttpException;
+import com.callv2.user.infrastructure.exception.InternalServerError;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -45,9 +46,14 @@ public class GlobalExceptionHandler {
                 .body(ApiError.with("Invalid Data Access Api Usage [%s]".formatted(ex.getMessage())));
     }
 
-    @ExceptionHandler(value = KeycloakException.class)
-    public ResponseEntity<ApiError> handle(final KeycloakException ex) {
-        return ResponseEntity.status(ex.status()).body(ApiError.with(ex.getMessage()));
+    @ExceptionHandler(value = InternalServerError.class)
+    public ResponseEntity<ApiError> handle(final InternalServerError ex) {
+        return ResponseEntity.status(ex.getStatus()).body(ApiError.with("Internal Server Error"));
+    }
+
+    @ExceptionHandler(value = HttpException.class)
+    public ResponseEntity<ApiError> handle(final HttpException ex) {
+        return ResponseEntity.status(ex.getStatus()).body(ApiError.with(ex.getMessage()));
     }
 
 }

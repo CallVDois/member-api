@@ -3,22 +3,21 @@ package com.callv2.user.infrastructure.keycloak.service;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
 
-import com.callv2.user.infrastructure.keycloak.exception.BadRequestException;
-import com.callv2.user.infrastructure.keycloak.exception.ForbiddenException;
-import com.callv2.user.infrastructure.keycloak.exception.InternalServerError;
-import com.callv2.user.infrastructure.keycloak.exception.UnauthorizedException;
-import com.callv2.user.infrastructure.keycloak.exception.UserAlreadyExistsException;
+import com.callv2.user.infrastructure.exception.BadRequestException;
+import com.callv2.user.infrastructure.exception.ConflictException;
+import com.callv2.user.infrastructure.exception.ForbiddenException;
+import com.callv2.user.infrastructure.exception.InternalServerError;
+import com.callv2.user.infrastructure.exception.UnauthorizedException;
 import com.callv2.user.infrastructure.keycloak.model.Error;
 import com.callv2.user.infrastructure.keycloak.model.ErrorRepresentation;
 import com.callv2.user.infrastructure.keycloak.model.UserRepresentation;
 import com.callv2.user.infrastructure.webclient.WebClientExceptionHandler;
-
-import reactor.core.publisher.Mono;
 
 public class KeycloakUserService {
 
@@ -70,19 +69,27 @@ public class KeycloakUserService {
 
     private ResponseSpec onStatus(final ResponseSpec responseSpec) {
         return responseSpec
-                .onStatus(BadRequestException.isSame(),
-                        WebClientExceptionHandler.throwsException(ErrorRepresentation.class, BadRequestException::from))
-                .onStatus(BadRequestException.isSame(),
-                        WebClientExceptionHandler.throwsException(ErrorRepresentation.class, BadRequestException::from))
-                .onStatus(UnauthorizedException.isSame(),
-                        WebClientExceptionHandler.throwsException(Error.class, UnauthorizedException::from))
-                .onStatus(ForbiddenException.isSame(),
-                        WebClientExceptionHandler.throwsException(Error.class, ForbiddenException::from))
-                .onStatus(UserAlreadyExistsException.isSame(),
+
+                .onStatus(HttpStatus.BAD_REQUEST::isSameCodeAs,
+                        WebClientExceptionHandler
+                                .throwsException(
+                                        ErrorRepresentation.class,
+                                        error -> BadRequestException.from(error.errorMessage())))
+
+                .onStatus(HttpStatus.UNAUTHORIZED::isSameCodeAs,
+                        WebClientExceptionHandler.throwsException(
+                                Error.class, error -> UnauthorizedException.from(error.error())))
+
+                .onStatus(HttpStatus.FORBIDDEN::isSameCodeAs,
+                        WebClientExceptionHandler.throwsException(Error.class,
+                                error -> ForbiddenException.from(error.error())))
+
+                .onStatus(HttpStatus.CONFLICT::isSameCodeAs,
                         WebClientExceptionHandler.throwsException(ErrorRepresentation.class,
-                                UserAlreadyExistsException::from))
+                                error -> ConflictException.from(error.errorMessage())))
+
                 .onStatus(HttpStatusCode::is5xxServerError,
-                        res -> res.bodyToMono(String.class).flatMap(error -> Mono.error(new RuntimeException(error))));
+                        WebClientExceptionHandler.throwsException(String.class, InternalServerError::from));
     }
 
 }

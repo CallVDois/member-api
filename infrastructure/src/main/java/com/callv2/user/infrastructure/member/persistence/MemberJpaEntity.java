@@ -33,10 +33,7 @@ public class MemberJpaEntity {
 
     private Instant updatedAt;
 
-    public MemberJpaEntity() {
-    }
-
-    private MemberJpaEntity(
+    public MemberJpaEntity(
             final String id,
             final String username,
             final String nickname,
@@ -51,6 +48,9 @@ public class MemberJpaEntity {
         this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public MemberJpaEntity() {
     }
 
     public Member toDomain() {
@@ -111,8 +111,8 @@ public class MemberJpaEntity {
         return active;
     }
 
-    public void setActive(Boolean enable) {
-        this.active = enable;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Instant getCreatedAt() {

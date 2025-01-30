@@ -28,6 +28,7 @@ public class Member extends AggregateRoot<MemberID> {
         this.username = username;
         this.email = email;
         this.nickname = nickname;
+        this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }

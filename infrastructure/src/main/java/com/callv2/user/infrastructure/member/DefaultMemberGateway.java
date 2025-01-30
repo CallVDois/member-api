@@ -2,13 +2,12 @@ package com.callv2.user.infrastructure.member;
 
 import java.util.Optional;
 
-import com.callv2.user.domain.member.Email;
+import com.callv2.user.domain.exception.NotFoundException;
 import com.callv2.user.domain.member.Member;
 import com.callv2.user.domain.member.MemberGateway;
 import com.callv2.user.domain.member.MemberID;
 import com.callv2.user.domain.member.Nickname;
 import com.callv2.user.domain.member.PreMember;
-import com.callv2.user.domain.member.Username;
 import com.callv2.user.infrastructure.keycloak.mapper.KeycloakUserMapper;
 import com.callv2.user.infrastructure.keycloak.service.KeycloakUserService;
 import com.callv2.user.infrastructure.member.persistence.MemberJpaEntity;
@@ -60,20 +59,12 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
-    public Optional<Member> findByUsername(final Username username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByUsername'");
-    }
-
-    @Override
-    public Optional<Member> findByEmail(final Email email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
-    }
-
-    @Override
     public Member update(final Member member) {
-        tokenKeycloakUserService.updateUser(keycloakUserMapper.toUserRepresentation(member), member.getId().getValue());
+
+        if (performKeycloakUpdate(member))
+            this.tokenKeycloakUserService
+                    .updateUser(keycloakUserMapper.toUserRepresentation(member), member.getId().getValue());
+
         return save(member);
     }
 
@@ -81,6 +72,17 @@ public class DefaultMemberGateway implements MemberGateway {
         return memberJpaRepository
                 .save(MemberJpaEntity.fromDomain(member))
                 .toDomain();
+    }
+
+    private boolean performKeycloakUpdate(final Member member) {
+        final MemberJpaEntity memberJpa = this.memberJpaRepository
+                .findById(member.getId().getValue())
+                .orElseThrow(() -> NotFoundException.with(Member.class, member.getId().getValue()));
+
+        return !(memberJpa.getEmail().equals(member.getEmail().value())
+                && memberJpa.getUsername().equals(member.getUsername().value())
+                && memberJpa.getActive() == member.isActive());
+
     }
 
 }

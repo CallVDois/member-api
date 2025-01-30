@@ -8,10 +8,6 @@ public interface MemberGateway {
 
     Optional<Member> findById(MemberID id);
 
-    Optional<Member> findByUsername(Username username);
-
-    Optional<Member> findByEmail(Email email);
-
     Member update(Member member);
 
 }
