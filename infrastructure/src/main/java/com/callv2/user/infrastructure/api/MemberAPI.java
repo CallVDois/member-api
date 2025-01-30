@@ -45,7 +45,7 @@ public interface MemberAPI {
             @PathVariable(value = "id", required = true) String id,
             @RequestParam(value = "active", defaultValue = "true") boolean active);
 
-    @PostMapping("quota/request/{amount}")
+    @PostMapping("quotas/requests/{amount}")
     @Operation(summary = "Request drive quota", description = "This method request a drive ammount quota", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Requested successfuly"),
@@ -54,5 +54,15 @@ public interface MemberAPI {
     ResponseEntity<Void> requestQuota(
             @PathVariable(value = "amount", required = true) long amount,
             @RequestParam(value = "unit", defaultValue = "GIGABYTE") QuotaUnit unit);
+
+    @PostMapping("{id}/quotas/requests/approve")
+    @Operation(summary = "Approve drive quota request", description = "This method approve a drive ammount quota request", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Approved successfuly"),
+            @ApiResponse(responseCode = "404", description = "Member not found")
+    })
+    ResponseEntity<Void> approveQuotaRequest(
+            @PathVariable(value = "id", required = true) String id,
+            @RequestParam(value = "approved", defaultValue = "true") boolean approved);
 
 }

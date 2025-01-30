@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import com.callv2.user.application.member.activation.TogleMemberActivationInput;
 import com.callv2.user.application.member.activation.TogleMemberActivationUseCase;
 import com.callv2.user.application.member.create.CreateMemberUseCase;
+import com.callv2.user.application.member.quota.request.approve.ApproveRequestQuotaInput;
+import com.callv2.user.application.member.quota.request.approve.ApproveRequestQuotaUseCase;
 import com.callv2.user.application.member.quota.request.create.CreateRequestQuotaInput;
 import com.callv2.user.application.member.quota.request.create.CreateRequestQuotaUseCase;
 import com.callv2.user.domain.member.QuotaUnit;
@@ -22,14 +24,17 @@ public class MemberController implements MemberAPI {
     private final CreateMemberUseCase createMemberUseCase;
     private final TogleMemberActivationUseCase togleMemberActivationUseCase;
     private final CreateRequestQuotaUseCase createRequestQuotaUseCase;
+    private final ApproveRequestQuotaUseCase approveRequestQuotaUseCase;
 
     public MemberController(
             final CreateMemberUseCase createMemberUseCase,
             final TogleMemberActivationUseCase togleMemberActivationUseCase,
-            final CreateRequestQuotaUseCase createRequestQuotaUseCase) {
+            final CreateRequestQuotaUseCase createRequestQuotaUseCase,
+            final ApproveRequestQuotaUseCase approveRequestQuotaUseCase) {
         this.createMemberUseCase = createMemberUseCase;
         this.togleMemberActivationUseCase = togleMemberActivationUseCase;
         this.createRequestQuotaUseCase = createRequestQuotaUseCase;
+        this.approveRequestQuotaUseCase = approveRequestQuotaUseCase;
     }
 
     @Override
@@ -52,6 +57,12 @@ public class MemberController implements MemberAPI {
 
         this.createRequestQuotaUseCase.execute(CreateRequestQuotaInput.of(memberId, amount, unit));
 
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> approveQuotaRequest(String id, boolean approved) {
+        this.approveRequestQuotaUseCase.execute(ApproveRequestQuotaInput.of(id, approved));
         return ResponseEntity.noContent().build();
     }
 

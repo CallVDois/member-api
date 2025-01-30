@@ -131,6 +131,17 @@ public class Member extends AggregateRoot<MemberID> {
         return this;
     }
 
+    public Member reproveQuotaRequest() {
+
+        if (this.quotaRequest.isEmpty())
+            return this;
+
+        this.quotaRequest = Optional.empty();
+        this.updatedAt = Instant.now();
+
+        return this;
+    }
+
     public Username getUsername() {
         return username;
     }

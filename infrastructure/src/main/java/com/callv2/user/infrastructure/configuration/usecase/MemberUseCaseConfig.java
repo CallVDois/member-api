@@ -7,6 +7,8 @@ import com.callv2.user.application.member.activation.DefaultTogleMemberActivatio
 import com.callv2.user.application.member.activation.TogleMemberActivationUseCase;
 import com.callv2.user.application.member.create.CreateMemberUseCase;
 import com.callv2.user.application.member.create.DefaultCreateMemberUseCase;
+import com.callv2.user.application.member.quota.request.approve.ApproveRequestQuotaUseCase;
+import com.callv2.user.application.member.quota.request.approve.DefaultApproveRequestQuotaUseCase;
 import com.callv2.user.application.member.quota.request.create.CreateRequestQuotaUseCase;
 import com.callv2.user.application.member.quota.request.create.DefaultCreateRequestQuotaUseCase;
 import com.callv2.user.domain.member.MemberGateway;
@@ -33,6 +35,11 @@ public class MemberUseCaseConfig {
     @Bean
     CreateRequestQuotaUseCase createRequestQuotaUseCase() {
         return new DefaultCreateRequestQuotaUseCase(memberGateway);
+    }
+
+    @Bean
+    ApproveRequestQuotaUseCase approveRequestQuotaUseCase() {
+        return new DefaultApproveRequestQuotaUseCase(memberGateway);
     }
 
 }
