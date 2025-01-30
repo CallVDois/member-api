@@ -2,18 +2,12 @@ package com.callv2.user.infrastructure.member;
 
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-
 import com.callv2.user.domain.exception.NotFoundException;
 import com.callv2.user.domain.member.Member;
 import com.callv2.user.domain.member.MemberGateway;
 import com.callv2.user.domain.member.MemberID;
 import com.callv2.user.domain.member.Nickname;
 import com.callv2.user.domain.member.PreMember;
-import com.callv2.user.domain.member.QuotaRequestPreview;
-import com.callv2.user.domain.pagination.Pagination;
-import com.callv2.user.domain.pagination.SearchQuery;
-import com.callv2.user.infrastructure.filter.adapter.QueryAdapter;
 import com.callv2.user.infrastructure.keycloak.mapper.KeycloakUserMapper;
 import com.callv2.user.infrastructure.keycloak.service.KeycloakUserService;
 import com.callv2.user.infrastructure.member.persistence.MemberJpaEntity;
@@ -89,20 +83,6 @@ public class DefaultMemberGateway implements MemberGateway {
                 && memberJpa.getUsername().equals(member.getUsername().value())
                 && memberJpa.getActive() == member.isActive());
 
-    }
-
-    @Override
-    public Pagination<QuotaRequestPreview> findAllQuotaRequests(SearchQuery searchQuery) {
-
-        final Page<QuotaRequestPreview> pageResult = this.memberJpaRepository
-                .findAllQuotaRequests(QueryAdapter.of(searchQuery));
-
-        return new Pagination<>(
-                pageResult.getNumber(),
-                pageResult.getSize(),
-                pageResult.getTotalPages(),
-                pageResult.getTotalElements(),
-                pageResult.toList());
     }
 
 }

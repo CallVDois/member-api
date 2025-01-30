@@ -18,8 +18,6 @@ public class MemberValidator extends Validator {
         validateId();
         validateUsername();
         validateNickname();
-        validateQuota();
-        validateQuotaRequest();
     }
 
     private void validateId() {
@@ -47,22 +45,6 @@ public class MemberValidator extends Validator {
         }
 
         this.member.getNickname().validate(this.validationHandler());
-    }
-
-    private void validateQuota() {
-        if (this.member.getQuota() == null) {
-            this.validationHandler().append(Error.with("'quota' is required"));
-            return;
-        }
-
-        this.member.getQuota().validate(this.validationHandler());
-    }
-
-    private void validateQuotaRequest() {
-        if (this.member.getQuotaRequest().isEmpty())
-            return;
-
-        this.member.getQuotaRequest().get().validate(this.validationHandler());
     }
 
 }
