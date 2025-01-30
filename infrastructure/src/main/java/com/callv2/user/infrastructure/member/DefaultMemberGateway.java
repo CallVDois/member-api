@@ -6,14 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.callv2.user.domain.exception.NotFoundException;
-import com.callv2.user.domain.member.Email;
 import com.callv2.user.domain.member.Member;
 import com.callv2.user.domain.member.MemberGateway;
 import com.callv2.user.domain.member.MemberID;
 import com.callv2.user.domain.member.Nickname;
 import com.callv2.user.domain.member.PreMember;
 import com.callv2.user.domain.member.QuotaRequestPreview;
-import com.callv2.user.domain.member.Username;
 import com.callv2.user.domain.pagination.Pagination;
 import com.callv2.user.domain.pagination.SearchQuery;
 import com.callv2.user.infrastructure.filter.FilterService;
@@ -70,18 +68,6 @@ public class DefaultMemberGateway implements MemberGateway {
         return this.memberJpaRepository
                 .findById(id.getValue())
                 .map(MemberJpaEntity::toDomain);
-    }
-
-    @Override
-    public Optional<Member> findByUsername(final Username username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByUsername'");
-    }
-
-    @Override
-    public Optional<Member> findByEmail(final Email email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
     }
 
     @Override
