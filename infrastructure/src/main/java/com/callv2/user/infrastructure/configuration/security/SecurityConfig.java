@@ -42,6 +42,8 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(authorize -> {
                     authorize
+                            .requestMatchers(HttpMethod.GET, "/members/quotas/requests")
+                            .hasAnyRole(ROLE_ADMIN)
                             .requestMatchers(HttpMethod.POST,
                                     "/members/{id}/active",
                                     "/members/{id}/quotas/requests/approve")

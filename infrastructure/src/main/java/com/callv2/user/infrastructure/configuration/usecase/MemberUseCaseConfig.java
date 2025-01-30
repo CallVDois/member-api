@@ -11,6 +11,8 @@ import com.callv2.user.application.member.quota.request.approve.ApproveRequestQu
 import com.callv2.user.application.member.quota.request.approve.DefaultApproveRequestQuotaUseCase;
 import com.callv2.user.application.member.quota.request.create.CreateRequestQuotaUseCase;
 import com.callv2.user.application.member.quota.request.create.DefaultCreateRequestQuotaUseCase;
+import com.callv2.user.application.member.quota.request.list.DefaultListRequestQuotaUseCase;
+import com.callv2.user.application.member.quota.request.list.ListRequestQuotaUseCase;
 import com.callv2.user.domain.member.MemberGateway;
 
 @Configuration
@@ -40,6 +42,11 @@ public class MemberUseCaseConfig {
     @Bean
     ApproveRequestQuotaUseCase approveRequestQuotaUseCase() {
         return new DefaultApproveRequestQuotaUseCase(memberGateway);
+    }
+
+    @Bean
+    ListRequestQuotaUseCase listRequestQuotaUseCase() {
+        return new DefaultListRequestQuotaUseCase(memberGateway);
     }
 
 }

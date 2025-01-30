@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.callv2.user.domain.member.MemberGateway;
+import com.callv2.user.infrastructure.filter.FilterService;
 import com.callv2.user.infrastructure.keycloak.mapper.KeycloakUserMapper;
 import com.callv2.user.infrastructure.keycloak.service.KeycloakUserService;
 import com.callv2.user.infrastructure.member.DefaultMemberGateway;
@@ -15,11 +16,13 @@ public class MemberGatewayConfig {
 
     @Bean
     MemberGateway memberGateway(
+            final FilterService filterService,
             final MemberJpaRepository memberJpaRepository,
             final KeycloakUserMapper keycloakUserMapper,
             @Qualifier("keycloakUserServiceClientCredentials") final KeycloakUserService clientKeycloakUserService,
             @Qualifier("keycloakUserServiceToken") final KeycloakUserService tokenKeycloakUserService) {
         return new DefaultMemberGateway(
+                filterService,
                 memberJpaRepository,
                 keycloakUserMapper,
                 clientKeycloakUserService,
