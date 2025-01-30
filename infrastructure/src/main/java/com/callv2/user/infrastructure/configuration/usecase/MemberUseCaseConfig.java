@@ -7,6 +7,8 @@ import com.callv2.user.application.member.activation.DefaultTogleMemberActivatio
 import com.callv2.user.application.member.activation.TogleMemberActivationUseCase;
 import com.callv2.user.application.member.create.CreateMemberUseCase;
 import com.callv2.user.application.member.create.DefaultCreateMemberUseCase;
+import com.callv2.user.application.member.retrieve.get.DefaultGetMemberUseCase;
+import com.callv2.user.application.member.retrieve.get.GetMemberUseCase;
 import com.callv2.user.domain.member.MemberGateway;
 
 @Configuration
@@ -26,6 +28,11 @@ public class MemberUseCaseConfig {
     @Bean
     TogleMemberActivationUseCase togleMemberActivationUseCase() {
         return new DefaultTogleMemberActivationUseCase(memberGateway);
+    }
+
+    @Bean
+    GetMemberUseCase getMemberUseCase() {
+        return new DefaultGetMemberUseCase(memberGateway);
     }
 
 }
