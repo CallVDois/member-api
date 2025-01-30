@@ -1,7 +1,5 @@
 package com.callv2.user.infrastructure.api;
 
-import java.util.List;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,7 +70,7 @@ public interface MemberAPI {
             @RequestParam(value = "approved", defaultValue = "true") boolean approved);
 
     @GetMapping(value = "quotas/requests", produces = { MediaType.APPLICATION_JSON_VALUE })
-    @Operation(summary = "List quotas requests", description = "This method list quotas requests")
+    @Operation(summary = "List quotas requests", description = "This method list quotas requests", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Quotas requests listed successfully", content = @Content(schema = @Schema(implementation = Pagination.class, subTypes = {
                     QuotaRequestListResponse.class }))),
@@ -81,9 +79,7 @@ public interface MemberAPI {
     ResponseEntity<Pagination<QuotaRequestListResponse>> list(
             @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
             @RequestParam(name = "perPage", required = false, defaultValue = "10") final int perPage,
-            @RequestParam(name = "orderField", required = false, defaultValue = "quotaRequestedAt") String orderField,
-            @RequestParam(name = "orderDirection", required = false, defaultValue = "DESC") SearchQuery.Order.Direction orderDirection,
-            @RequestParam(name = "filterMethod", required = false, defaultValue = "AND") SearchQuery.FilterMethod filterMethod,
-            @RequestParam(name = "filters", required = false) List<String> filters);
+            @RequestParam(name = "orderField", required = false, defaultValue = "requestedAt") String orderField,
+            @RequestParam(name = "orderDirection", required = false, defaultValue = "DESC") SearchQuery.Order.Direction orderDirection);
 
 }

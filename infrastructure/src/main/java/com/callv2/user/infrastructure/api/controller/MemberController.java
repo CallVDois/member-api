@@ -17,10 +17,8 @@ import com.callv2.user.application.member.quota.request.list.ListRequestQuotaUse
 import com.callv2.user.domain.member.QuotaUnit;
 import com.callv2.user.domain.pagination.Pagination;
 import com.callv2.user.domain.pagination.SearchQuery;
-import com.callv2.user.domain.pagination.SearchQuery.FilterMethod;
 import com.callv2.user.domain.pagination.SearchQuery.Order.Direction;
 import com.callv2.user.infrastructure.api.MemberAPI;
-import com.callv2.user.infrastructure.filter.adapter.QueryAdapter;
 import com.callv2.user.infrastructure.member.adapter.MemberAdapter;
 import com.callv2.user.infrastructure.member.model.CreateMemberRequest;
 import com.callv2.user.infrastructure.member.model.QuotaRequestListResponse;
@@ -83,22 +81,14 @@ public class MemberController implements MemberAPI {
             final int page,
             final int perPage,
             final String orderField,
-            final Direction orderDirection,
-            final FilterMethod filterMethod,
-            final List<String> filters) {
-
-        final List<SearchQuery.Filter> searchFilters = filters == null ? List.of()
-                : filters
-                        .stream()
-                        .map(QueryAdapter::of)
-                        .toList();
+            final Direction orderDirection) {
 
         final SearchQuery query = SearchQuery.of(
                 page,
                 perPage,
                 SearchQuery.Order.of(orderField, orderDirection),
-                filterMethod,
-                searchFilters);
+                null,
+                List.of());
 
         return ResponseEntity.ok(listRequestQuotaUseCase.execute(query).map(MemberPresenter::present));
 

@@ -2,7 +2,6 @@ package com.callv2.user.infrastructure.member.persistence;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,6 +21,6 @@ public interface MemberJpaRepository extends JpaRepository<MemberJpaEntity, Stri
             where
                 m.quotaRequestedAt is not null
             """)
-    Page<QuotaRequestPreview> findAllQuotaRequests(Specification<MemberJpaEntity> whereClause, Pageable page);
+    Page<QuotaRequestPreview> findAllQuotaRequests(Pageable page);
 
 }
