@@ -48,7 +48,7 @@ public interface MemberAdminAPI {
     ResponseEntity<GetMemberResponse> get(@PathVariable(value = "id", required = true) String id);
 
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-    @Operation(summary = "List files", description = "This method list files", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "List members", description = "This method list files", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Files listed successfully", content = @Content(schema = @Schema(implementation = Page.class, subTypes = {
                     MemberListResponse.class }))),
