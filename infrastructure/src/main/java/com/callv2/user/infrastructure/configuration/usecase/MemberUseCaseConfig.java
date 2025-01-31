@@ -9,6 +9,8 @@ import com.callv2.user.application.member.create.CreateMemberUseCase;
 import com.callv2.user.application.member.create.DefaultCreateMemberUseCase;
 import com.callv2.user.application.member.retrieve.get.DefaultGetMemberUseCase;
 import com.callv2.user.application.member.retrieve.get.GetMemberUseCase;
+import com.callv2.user.application.member.retrieve.list.DefaultListMembersUseCase;
+import com.callv2.user.application.member.retrieve.list.ListMembersUseCase;
 import com.callv2.user.domain.member.MemberGateway;
 
 @Configuration
@@ -33,6 +35,11 @@ public class MemberUseCaseConfig {
     @Bean
     GetMemberUseCase getMemberUseCase() {
         return new DefaultGetMemberUseCase(memberGateway);
+    }
+
+    @Bean
+    ListMembersUseCase listMembersUseCase() {
+        return new DefaultListMembersUseCase(memberGateway);
     }
 
 }
