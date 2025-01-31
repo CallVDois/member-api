@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.callv2.user.domain.pagination.SearchQuery;
+import com.callv2.user.domain.pagination.Filter;
 import com.callv2.user.infrastructure.converter.Caster;
 
 public abstract class SpecificationFilter {
@@ -15,9 +15,9 @@ public abstract class SpecificationFilter {
         this.caster = Objects.requireNonNull(caster);
     }
 
-    abstract SearchQuery.Filter.Type filterType();
+    abstract Filter.Type filterType();
 
-    abstract <T> Specification<T> buildSpecification(SearchQuery.Filter filter);
+    abstract <T> Specification<T> buildSpecification(Filter filter);
 
     protected <T> T cast(final Object value, final Class<T> clazz) {
         return caster.cast(value, clazz);
