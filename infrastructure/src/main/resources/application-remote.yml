@@ -1,0 +1,24 @@
+server:
+  port: ${SERVER_PORT}
+
+version: ${PROJECT_VERSION:0.0.0}
+environment: ${PROJECT_ENVIRONMENT:unknown}
+
+keycloak:
+  realm: ${KEYCLOAK_REALM}
+  host: ${KEYCLOAK_HOST}
+  client:
+    member-api:
+      client-id: ${KEYCLOAK_CLIENT_ID}
+      client-secret: ${KEYCLOAK_CLIENT_SECRET}
+
+postgres:
+  host: ${POSTGRES_HOST}
+  port: ${POSTGRES_PORT}
+  database: ${POSTGRES_DATABASE}
+  username: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+
+db:
+  ddl-auto: ${DB_DDL_AUTO}
+  show-sql: ${DB_SHOW_SQL}
