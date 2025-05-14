@@ -1,14 +1,18 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:21.0.7_6-jdk-alpine AS builder
 
-# Set the working directory in the container
-WORKDIR /app
+WORKDIR /usr/app
 
-# Copy the build artifacts from the host to the container
-COPY build/libs/*.jar app.jar
+COPY . .
 
-# Expose the port the application runs on
-EXPOSE 8080
+RUN ./gradlew clean bootJar --no-daemon
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+FROM eclipse-temurin:21.0.7_6-jdk-alpine
+
+COPY --from=builder /usr/app/build/libs/application.jar /opt/app/application.jar
+
+RUN addgroup -S app && adduser -S app -G app
+USER app:app
+
+EXPOSE 80
+
+CMD ["sh", "-c", "java -jar /opt/app/application.jar"]
