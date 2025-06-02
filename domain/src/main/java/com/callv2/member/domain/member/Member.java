@@ -1,11 +1,17 @@
 package com.callv2.member.domain.member;
 
 import java.time.Instant;
+import java.util.Optional;
+import java.util.Queue;
 
 import com.callv2.member.domain.AggregateRoot;
+import com.callv2.member.domain.event.Event;
+import com.callv2.member.domain.event.EventSource;
 import com.callv2.member.domain.validation.ValidationHandler;
 
-public class Member extends AggregateRoot<MemberID> {
+public class Member extends AggregateRoot<MemberID> implements EventSource {
+
+    private Queue<Event<?>> events;
 
     private Username username;
     private Email email;
@@ -31,6 +37,8 @@ public class Member extends AggregateRoot<MemberID> {
         this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+
+        this.events = new java.util.LinkedList<>();
     }
 
     public static Member create(
@@ -41,7 +49,12 @@ public class Member extends AggregateRoot<MemberID> {
 
         final Instant now = Instant.now();
 
-        return new Member(id, username, email, nickname, false, now, now);
+        final Member member = new Member(id, username, email, nickname, false, now, now);
+        member.events
+                .add(MemberCreatedEvent.create(
+                        "MemberAggregate",
+                        MemberCreatedEvent.Data.of(member)));
+        return member;
     }
 
     public static Member with(
@@ -58,6 +71,11 @@ public class Member extends AggregateRoot<MemberID> {
     @Override
     public void validate(final ValidationHandler handler) {
         new MemberValidator(this, handler).validate();
+    }
+
+    @Override
+    public Optional<Event<?>> nextEvent() {
+        return Optional.ofNullable(this.events.poll());
     }
 
     public Member activate() {
