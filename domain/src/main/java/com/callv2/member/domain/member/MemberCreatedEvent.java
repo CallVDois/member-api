@@ -20,6 +20,7 @@ public record MemberCreatedEvent(
     }
 
     public record Data(
+            String id,
             String username,
             String email,
             String nickname,
@@ -29,6 +30,7 @@ public record MemberCreatedEvent(
 
         public static Data of(final Member member) {
             return new Data(
+                    member.getId().getValue(),
                     member.getUsername().value(),
                     member.getEmail().value(),
                     member.getNickname().value(),
