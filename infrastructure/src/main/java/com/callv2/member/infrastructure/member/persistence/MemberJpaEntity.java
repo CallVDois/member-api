@@ -1,6 +1,8 @@
 package com.callv2.member.infrastructure.member.persistence;
 
 import java.time.Instant;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.callv2.member.domain.member.entity.Member;
 import com.callv2.member.domain.member.entity.MemberID;
@@ -11,6 +13,9 @@ import com.callv2.member.domain.member.valueobject.Username;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity(name = "Member")
@@ -29,6 +34,10 @@ public class MemberJpaEntity {
     @Column(nullable = false)
     private Boolean active;
 
+    @ManyToMany
+    @JoinTable(name = "member_system", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "system_id"))
+    private Set<SystemJpaEntity> systems;
+
     private Instant createdAt;
 
     private Instant updatedAt;
@@ -39,6 +48,7 @@ public class MemberJpaEntity {
             final String nickname,
             final String email,
             final Boolean active,
+            final Set<SystemJpaEntity> systems,
             final Instant createdAt,
             final Instant updatedAt) {
         this.id = id;
@@ -46,6 +56,7 @@ public class MemberJpaEntity {
         this.nickname = nickname;
         this.email = email;
         this.active = active;
+        this.systems = systems;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -60,6 +71,9 @@ public class MemberJpaEntity {
                 Email.of(getEmail()),
                 Nickname.of(getNickname()),
                 getActive(),
+                systems.stream()
+                        .map(SystemJpaEntity::toDomain)
+                        .collect(Collectors.toSet()),
                 getCreatedAt(),
                 getUpdatedAt());
     }
@@ -71,6 +85,10 @@ public class MemberJpaEntity {
                 member.getNickname().value(),
                 member.getEmail().value(),
                 member.isActive(),
+                member.getAvailableSystems()
+                        .stream()
+                        .map(SystemJpaEntity::fromDomain)
+                        .collect(Collectors.toSet()),
                 member.getCreatedAt(),
                 member.getUpdatedAt());
     }
@@ -113,6 +131,14 @@ public class MemberJpaEntity {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Set<SystemJpaEntity> getSystems() {
+        return systems;
+    }
+
+    public void setSystems(Set<SystemJpaEntity> systems) {
+        this.systems = systems;
     }
 
     public Instant getCreatedAt() {
