@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.callv2.member.infrastructure.keycloak.service.KeycloakUserService;
+import com.callv2.member.infrastructure.external.keycloak.service.KeycloakUserService;
 
 @Configuration
 public class ClientConfig {

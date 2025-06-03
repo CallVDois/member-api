@@ -1,4 +1,4 @@
-package com.callv2.member.infrastructure.keycloak.model;
+package com.callv2.member.infrastructure.external.keycloak.model;
 
 import java.util.Map;
 

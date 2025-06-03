@@ -1,4 +1,4 @@
-package com.callv2.member.infrastructure.keycloak.service;
+package com.callv2.member.infrastructure.external.keycloak.service;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -14,9 +14,9 @@ import com.callv2.member.infrastructure.exception.ConflictException;
 import com.callv2.member.infrastructure.exception.ForbiddenException;
 import com.callv2.member.infrastructure.exception.InternalServerError;
 import com.callv2.member.infrastructure.exception.UnauthorizedException;
-import com.callv2.member.infrastructure.keycloak.model.Error;
-import com.callv2.member.infrastructure.keycloak.model.ErrorRepresentation;
-import com.callv2.member.infrastructure.keycloak.model.UserRepresentation;
+import com.callv2.member.infrastructure.external.keycloak.model.Error;
+import com.callv2.member.infrastructure.external.keycloak.model.ErrorRepresentation;
+import com.callv2.member.infrastructure.external.keycloak.model.UserRepresentation;
 import com.callv2.member.infrastructure.webclient.WebClientExceptionHandler;
 
 public class KeycloakUserService {

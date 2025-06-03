@@ -1,4 +1,4 @@
-package com.callv2.member.infrastructure.keycloak.mapper;
+package com.callv2.member.infrastructure.external.keycloak.mapper;
 
 import java.util.List;
 
@@ -7,8 +7,9 @@ import org.mapstruct.Mapping;
 
 import com.callv2.member.domain.member.entity.Member;
 import com.callv2.member.domain.member.valueobject.PreMember;
-import com.callv2.member.infrastructure.keycloak.model.CredentialRepresentation;
-import com.callv2.member.infrastructure.keycloak.model.UserRepresentation;
+import com.callv2.member.infrastructure.external.keycloak.model.CredentialRepresentation;
+import com.callv2.member.infrastructure.external.keycloak.model.UserRepresentation;
+
 import org.mapstruct.Named;
 
 @Mapper

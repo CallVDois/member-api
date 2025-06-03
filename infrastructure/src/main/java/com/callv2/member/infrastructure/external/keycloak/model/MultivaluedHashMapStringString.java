@@ -1,8 +1,11 @@
-package com.callv2.member.infrastructure.keycloak.model;
+package com.callv2.member.infrastructure.external.keycloak.model;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
-public class AllOfCredentialRepresentationConfig extends MultivaluedHashMapStringString {
+@SuppressWarnings("rawtypes")
+public class MultivaluedHashMapStringString extends HashMap<String, List> {
 
     @Override
     public boolean equals(java.lang.Object o) {

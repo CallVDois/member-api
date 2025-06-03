@@ -12,10 +12,10 @@ import com.callv2.member.domain.member.valueobject.Nickname;
 import com.callv2.member.domain.member.valueobject.PreMember;
 import com.callv2.member.domain.pagination.Page;
 import com.callv2.member.domain.pagination.SearchQuery;
+import com.callv2.member.infrastructure.external.keycloak.mapper.KeycloakUserMapper;
+import com.callv2.member.infrastructure.external.keycloak.service.KeycloakUserService;
 import com.callv2.member.infrastructure.filter.FilterService;
 import com.callv2.member.infrastructure.filter.adapter.QueryAdapter;
-import com.callv2.member.infrastructure.keycloak.mapper.KeycloakUserMapper;
-import com.callv2.member.infrastructure.keycloak.service.KeycloakUserService;
 import com.callv2.member.infrastructure.member.persistence.MemberJpaEntity;
 import com.callv2.member.infrastructure.member.persistence.MemberJpaRepository;
 
