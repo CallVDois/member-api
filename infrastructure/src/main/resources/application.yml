@@ -45,3 +45,10 @@ spring:
     port: ${rabbitmq.port}
     username: ${rabbitmq.username}
     password: ${rabbitmq.password}
+
+messaging:
+  rabbitmq:
+    producers:
+      member-created:
+        exchange: member
+        routing-key: sync.member

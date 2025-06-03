@@ -1,5 +1,6 @@
 package com.callv2.member.domain.event;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +10,8 @@ public final class EventDispatcher {
 
     private final ConcurrentHashMap<String, List<EventHandler<?>>> handlers = new ConcurrentHashMap<>();
 
-    public void register(final EventHandler<?> handler) {
-        this.handlers.computeIfAbsent(handler.eventName(), k -> new ArrayList<>()).add(handler);
+    public void register(final String eventName, final EventHandler<?> handler) {
+        this.handlers.computeIfAbsent(eventName, k -> new ArrayList<>()).add(handler);
     }
 
     public void unregister(final Event<?> event, final EventHandler<?> handler) {
@@ -24,7 +25,7 @@ public final class EventDispatcher {
         this.handlers.remove(eventName);
     }
 
-    public <D> void notify(final Event<D> event) {
+    public <D extends Serializable> void notify(final Event<D> event) {
         @SuppressWarnings("unchecked")
         final List<EventHandler<D>> handlers = (List<EventHandler<D>>) Optional
                 .ofNullable(this.handlers.get(event.name()))

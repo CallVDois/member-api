@@ -1,8 +1,9 @@
 package com.callv2.member.domain.event;
 
-public interface EventHandler<D> {
+import java.io.Serializable;
 
-    String eventName();
+@FunctionalInterface
+public interface EventHandler<D extends Serializable> {
 
     void handle(Event<D> event);
 

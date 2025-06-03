@@ -101,9 +101,10 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     private Member save(final Member member) {
-        return memberJpaRepository
-                .save(MemberJpaEntity.fromDomain(member))
-                .toDomain();
+        memberJpaRepository
+                .save(MemberJpaEntity.fromDomain(member));
+
+        return member;
     }
 
     private boolean performKeycloakUpdate(final Member member) {

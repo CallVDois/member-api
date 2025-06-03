@@ -1,5 +1,6 @@
 package com.callv2.member.domain.member;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -9,7 +10,7 @@ public record MemberCreatedEvent(
         String id,
         String source,
         MemberCreatedEvent.Data data,
-        Instant generatedAt) implements Event<MemberCreatedEvent.Data> {
+        Instant occurredAt) implements Event<MemberCreatedEvent.Data> {
 
     private static final String NAME = "member.created";
 
@@ -24,7 +25,7 @@ public record MemberCreatedEvent(
             String nickname,
             boolean isActive,
             Instant createdAt,
-            Instant updatedAt) {
+            Instant updatedAt) implements Serializable {
 
         public static Data of(final Member member) {
             return new Data(

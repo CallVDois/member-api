@@ -2,8 +2,10 @@ package com.callv2.member.application.member.create;
 
 import java.util.Objects;
 
+import com.callv2.member.domain.event.EventDispatcher;
 import com.callv2.member.domain.exception.DomainException;
 import com.callv2.member.domain.member.Email;
+import com.callv2.member.domain.member.Member;
 import com.callv2.member.domain.member.MemberGateway;
 import com.callv2.member.domain.member.Nickname;
 import com.callv2.member.domain.member.Password;
@@ -15,8 +17,13 @@ public class DefaultCreateMemberUseCase extends CreateMemberUseCase {
 
     private final MemberGateway memberGateway;
 
-    public DefaultCreateMemberUseCase(final MemberGateway memberGateway) {
+    private final EventDispatcher eventDispatcher;
+
+    public DefaultCreateMemberUseCase(
+            final MemberGateway memberGateway,
+            final EventDispatcher eventDispatcher) {
         this.memberGateway = Objects.requireNonNull(memberGateway);
+        this.eventDispatcher = Objects.requireNonNull(eventDispatcher);
     }
 
     @Override
@@ -37,7 +44,10 @@ public class DefaultCreateMemberUseCase extends CreateMemberUseCase {
         if (notification.hasError())
             throw DomainException.with(notification.getErrors());
 
-        return CreateMemberOutput.with(this.memberGateway.create(preMember).getId().getValue());
+        final Member member = this.memberGateway.create(preMember);
+        this.eventDispatcher.notify(member);
+
+        return CreateMemberOutput.with(member.getId().getValue());
     }
 
 }
