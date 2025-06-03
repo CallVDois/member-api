@@ -27,11 +27,11 @@ public class ProducerConfig {
 
     @Bean
     Producer<Event<MemberCreatedEvent.Data>> memberCreatedEventRabbitMQProducer() {
-        final var properties = rabbitMQPropertiesProducerProperties.get("member-created");
+        final var properties = this.rabbitMQPropertiesProducerProperties.get("member-created");
         return new RabbitMQProducer<>(
                 properties.getExchange(),
                 properties.getRoutingKey(),
-                new RabbitTemplate(rabbitTemplate.getConnectionFactory()));
+                this.rabbitTemplate);
     }
 
 }
