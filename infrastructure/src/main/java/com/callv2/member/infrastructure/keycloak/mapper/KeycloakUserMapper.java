@@ -5,8 +5,8 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.callv2.member.domain.member.Member;
-import com.callv2.member.domain.member.PreMember;
+import com.callv2.member.domain.member.entity.Member;
+import com.callv2.member.domain.member.valueobject.PreMember;
 import com.callv2.member.infrastructure.keycloak.model.CredentialRepresentation;
 import com.callv2.member.infrastructure.keycloak.model.UserRepresentation;
 import org.mapstruct.Named;

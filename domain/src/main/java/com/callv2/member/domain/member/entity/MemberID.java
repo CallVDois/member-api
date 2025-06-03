@@ -1,4 +1,4 @@
-package com.callv2.member.domain.member;
+package com.callv2.member.domain.member.entity;
 
 import com.callv2.member.domain.Identifier;
 

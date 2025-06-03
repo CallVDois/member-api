@@ -1,10 +1,11 @@
-package com.callv2.member.domain.member;
+package com.callv2.member.domain.member.event;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
 import com.callv2.member.domain.event.Event;
+import com.callv2.member.domain.member.entity.Member;
 
 public record MemberCreatedEvent(
         String id,

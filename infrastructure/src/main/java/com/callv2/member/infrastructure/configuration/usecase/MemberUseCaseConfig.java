@@ -14,7 +14,7 @@ import com.callv2.member.application.member.retrieve.get.GetMemberUseCase;
 import com.callv2.member.application.member.retrieve.list.DefaultListMembersUseCase;
 import com.callv2.member.application.member.retrieve.list.ListMembersUseCase;
 import com.callv2.member.domain.event.EventDispatcher;
-import com.callv2.member.domain.member.MemberGateway;
+import com.callv2.member.domain.member.gateway.MemberGateway;
 
 @Configuration
 public class MemberUseCaseConfig {

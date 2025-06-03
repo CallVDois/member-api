@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.callv2.member.domain.event.Event;
-import com.callv2.member.domain.member.MemberCreatedEvent;
+import com.callv2.member.domain.member.event.MemberCreatedEvent;
 import com.callv2.member.infrastructure.configuration.properties.messaging.RabbitMQProducerProperties;
 import com.callv2.member.infrastructure.messaging.producer.Producer;
 import com.callv2.member.infrastructure.messaging.producer.rabbitmq.RabbitMQProducer;

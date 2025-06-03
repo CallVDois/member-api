@@ -1,4 +1,4 @@
-package com.callv2.member.domain.member;
+package com.callv2.member.domain.member.valueobject;
 
 import com.callv2.member.domain.ValueObject;
 import com.callv2.member.domain.validation.Error;

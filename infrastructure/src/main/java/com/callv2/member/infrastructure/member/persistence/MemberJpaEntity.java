@@ -2,11 +2,11 @@ package com.callv2.member.infrastructure.member.persistence;
 
 import java.time.Instant;
 
-import com.callv2.member.domain.member.Email;
-import com.callv2.member.domain.member.Member;
-import com.callv2.member.domain.member.MemberID;
-import com.callv2.member.domain.member.Nickname;
-import com.callv2.member.domain.member.Username;
+import com.callv2.member.domain.member.entity.Member;
+import com.callv2.member.domain.member.entity.MemberID;
+import com.callv2.member.domain.member.valueobject.Email;
+import com.callv2.member.domain.member.valueobject.Nickname;
+import com.callv2.member.domain.member.valueobject.Username;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

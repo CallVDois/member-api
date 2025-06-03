@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.callv2.member.domain.exception.NotFoundException;
-import com.callv2.member.domain.member.Member;
-import com.callv2.member.domain.member.MemberGateway;
-import com.callv2.member.domain.member.MemberID;
-import com.callv2.member.domain.member.Nickname;
-import com.callv2.member.domain.member.PreMember;
+import com.callv2.member.domain.member.entity.Member;
+import com.callv2.member.domain.member.entity.MemberID;
+import com.callv2.member.domain.member.gateway.MemberGateway;
+import com.callv2.member.domain.member.valueobject.Nickname;
+import com.callv2.member.domain.member.valueobject.PreMember;
 import com.callv2.member.domain.pagination.Page;
 import com.callv2.member.domain.pagination.SearchQuery;
 import com.callv2.member.infrastructure.filter.FilterService;

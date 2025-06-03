@@ -1,5 +1,6 @@
-package com.callv2.member.domain.member;
+package com.callv2.member.domain.member.validation;
 
+import com.callv2.member.domain.member.entity.Member;
 import com.callv2.member.domain.validation.Error;
 import com.callv2.member.domain.validation.ValidationHandler;
 import com.callv2.member.domain.validation.Validator;
@@ -8,7 +9,7 @@ public class MemberValidator extends Validator {
 
     private final Member member;
 
-    protected MemberValidator(final Member aMember, final ValidationHandler aHandler) {
+    public MemberValidator(final Member aMember, final ValidationHandler aHandler) {
         super(aHandler);
         this.member = aMember;
     }

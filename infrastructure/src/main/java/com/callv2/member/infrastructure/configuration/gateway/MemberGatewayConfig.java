@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.callv2.member.domain.member.MemberGateway;
+import com.callv2.member.domain.member.gateway.MemberGateway;
 import com.callv2.member.infrastructure.filter.FilterService;
 import com.callv2.member.infrastructure.keycloak.mapper.KeycloakUserMapper;
 import com.callv2.member.infrastructure.keycloak.service.KeycloakUserService;

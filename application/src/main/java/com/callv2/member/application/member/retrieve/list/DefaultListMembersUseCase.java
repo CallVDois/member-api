@@ -2,7 +2,7 @@ package com.callv2.member.application.member.retrieve.list;
 
 import java.util.Objects;
 
-import com.callv2.member.domain.member.MemberGateway;
+import com.callv2.member.domain.member.gateway.MemberGateway;
 import com.callv2.member.domain.pagination.Page;
 import com.callv2.member.domain.pagination.SearchQuery;
 
