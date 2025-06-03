@@ -51,4 +51,7 @@ messaging:
     producers:
       member-created:
         exchange: member
-        routing-key: sync.member
+        routing-key: member.created
+      member-updated:
+        exchange: member
+        routing-key: member.updated

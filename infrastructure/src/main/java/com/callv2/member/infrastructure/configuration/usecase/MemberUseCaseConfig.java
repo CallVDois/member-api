@@ -36,7 +36,7 @@ public class MemberUseCaseConfig {
 
     @Bean
     TogleMemberActivationUseCase togleMemberActivationUseCase() {
-        return new DefaultTogleMemberActivationUseCase(memberGateway);
+        return new DefaultTogleMemberActivationUseCase(memberGateway, eventDispatcher);
     }
 
     @Bean

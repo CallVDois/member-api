@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.callv2.member.domain.event.Event;
 import com.callv2.member.domain.member.event.MemberCreatedEvent;
+import com.callv2.member.domain.member.event.MemberUpdatedEvent;
 import com.callv2.member.infrastructure.configuration.properties.messaging.RabbitMQProducerProperties;
 import com.callv2.member.infrastructure.messaging.producer.Producer;
 import com.callv2.member.infrastructure.messaging.producer.rabbitmq.RabbitMQProducer;
@@ -28,6 +29,15 @@ public class ProducerConfig {
     @Bean
     Producer<Event<MemberCreatedEvent.Data>> memberCreatedEventRabbitMQProducer() {
         final var properties = this.rabbitMQPropertiesProducerProperties.get("member-created");
+        return new RabbitMQProducer<>(
+                properties.getExchange(),
+                properties.getRoutingKey(),
+                this.rabbitTemplate);
+    }
+
+    @Bean
+    Producer<Event<MemberUpdatedEvent.Data>> memberUpdatedEventRabbitMQProducer() {
+        final var properties = this.rabbitMQPropertiesProducerProperties.get("member-updated");
         return new RabbitMQProducer<>(
                 properties.getExchange(),
                 properties.getRoutingKey(),
