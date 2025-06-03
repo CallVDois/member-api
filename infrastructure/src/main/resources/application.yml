@@ -5,7 +5,7 @@ project:
 
 server:
   port: ${SERVER_PORT}
-  forward-headers-strategy: none
+  forward-headers-strategy: framework
   servlet:
     context-path: /api
   compression:
@@ -38,7 +38,7 @@ spring:
     url: jdbc:postgresql://${postgres.host}:${postgres.port}/${postgres.database}
   jpa:
     hibernate:
-      ddl-auto: ${db.ddl-auto}
+      ddl-auto: none
     show-sql: ${db.show-sql}
   rabbitmq:
     host: ${rabbitmq.host}
