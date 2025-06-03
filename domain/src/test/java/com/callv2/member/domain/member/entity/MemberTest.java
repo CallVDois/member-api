@@ -16,7 +16,7 @@ public class MemberTest {
 
     @Test
     void givenAValidParams_whenCallsCreate_thenShouldCreateAMember() {
-
+                  
         final var expectedId = MemberID.of("123");
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("eser@email.com");
