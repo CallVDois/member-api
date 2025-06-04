@@ -209,4 +209,158 @@ public class MemberTest {
         assertFalse(anotherEvent.isPresent());
     }
 
+    @Test
+    void givenAnInactiveMember_whenCallsActivate_thenShouldActivateTheMember() {
+
+        final var expectedId = MemberID.of("123");
+        final var expectedUsername = Username.of("user");
+        final var expectedEmail = Email.of("email@email.com");
+        final var expectedNickname = Nickname.of("user_nickname");
+        final var expectedCreateAt = Instant.now();
+        final var expectedIsActive = true;
+        final var expectedSystems = Set.of(System.DRIVE, System.MEMBER);
+        final var expectedUpdatedAt = expectedCreateAt;
+        final var expectedMember = Member.with(
+                expectedId,
+                expectedUsername,
+                expectedEmail,
+                expectedNickname,
+                false,
+                expectedSystems,
+                expectedCreateAt,
+                expectedUpdatedAt);
+
+        final var actualMember = assertDoesNotThrow(() -> expectedMember.activate());
+
+        assertEquals(expectedId, actualMember.getId());
+        assertEquals(expectedUsername, actualMember.getUsername());
+        assertEquals(expectedEmail, actualMember.getEmail());
+        assertEquals(expectedNickname, actualMember.getNickname());
+        assertEquals(expectedIsActive, actualMember.isActive());
+        assertEquals(expectedCreateAt, actualMember.getCreatedAt());
+        assertTrue(actualMember.getAvailableSystems().containsAll(expectedSystems));
+        assertEquals(expectedSystems.size(), actualMember.getAvailableSystems().size());
+        assertTrue(actualMember.getUpdatedAt().isAfter(expectedUpdatedAt));
+        final var updatedEvent = actualMember.nextEvent();
+        assertTrue(updatedEvent.isPresent());
+        assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
+        assertEquals("MemberAggregate", updatedEvent.get().source());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        final var anotherEvent = actualMember.nextEvent();
+        assertFalse(anotherEvent.isPresent());
+    }
+
+    @Test
+    void givenAnActiveMember_whenCallsDeactivate_thenShouldInactivateTheMember() {
+
+        final var expectedId = MemberID.of("123");
+        final var expectedUsername = Username.of("user");
+        final var expectedEmail = Email.of("email@email.com");
+        final var expectedNickname = Nickname.of("user_nickname");
+        final var expectedCreateAt = Instant.now();
+        final var expectedIsActive = false;
+        final var expectedSystems = Set.of(System.DRIVE, System.MEMBER);
+        final var expectedUpdatedAt = expectedCreateAt;
+        final var expectedMember = Member.with(
+                expectedId,
+                expectedUsername,
+                expectedEmail,
+                expectedNickname,
+                true,
+                expectedSystems,
+                expectedCreateAt,
+                expectedUpdatedAt);
+
+        final var actualMember = assertDoesNotThrow(() -> expectedMember.deactivate());
+
+        assertEquals(expectedId, actualMember.getId());
+        assertEquals(expectedUsername, actualMember.getUsername());
+        assertEquals(expectedEmail, actualMember.getEmail());
+        assertEquals(expectedNickname, actualMember.getNickname());
+        assertEquals(expectedIsActive, actualMember.isActive());
+        assertEquals(expectedCreateAt, actualMember.getCreatedAt());
+        assertTrue(actualMember.getAvailableSystems().containsAll(expectedSystems));
+        assertEquals(expectedSystems.size(), actualMember.getAvailableSystems().size());
+        assertTrue(actualMember.getUpdatedAt().isAfter(expectedUpdatedAt));
+        final var updatedEvent = actualMember.nextEvent();
+        assertTrue(updatedEvent.isPresent());
+        assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
+        assertEquals("MemberAggregate", updatedEvent.get().source());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        final var anotherEvent = actualMember.nextEvent();
+        assertFalse(anotherEvent.isPresent());
+    }
+
+    @Test
+    void givenAnInactiveMember_whenCallsDeactivate_thenShouldDoNothing() {
+
+        final var expectedId = MemberID.of("123");
+        final var expectedUsername = Username.of("user");
+        final var expectedEmail = Email.of("email@email.com");
+        final var expectedNickname = Nickname.of("user_nickname");
+        final var expectedCreateAt = Instant.now();
+        final var expectedIsActive = false;
+        final var expectedSystems = Set.of(System.DRIVE, System.MEMBER);
+        final var expectedUpdatedAt = expectedCreateAt;
+        final var expectedMember = Member.with(
+                expectedId,
+                expectedUsername,
+                expectedEmail,
+                expectedNickname,
+                false,
+                expectedSystems,
+                expectedCreateAt,
+                expectedUpdatedAt);
+
+        final var actualMember = assertDoesNotThrow(() -> expectedMember.deactivate());
+
+        assertEquals(expectedId, actualMember.getId());
+        assertEquals(expectedUsername, actualMember.getUsername());
+        assertEquals(expectedEmail, actualMember.getEmail());
+        assertEquals(expectedNickname, actualMember.getNickname());
+        assertEquals(expectedIsActive, actualMember.isActive());
+        assertEquals(expectedCreateAt, actualMember.getCreatedAt());
+        assertTrue(actualMember.getAvailableSystems().containsAll(expectedSystems));
+        assertEquals(expectedSystems.size(), actualMember.getAvailableSystems().size());
+        assertEquals(actualMember.getCreatedAt(), actualMember.getUpdatedAt());
+        final var anotherEvent = actualMember.nextEvent();
+        assertFalse(anotherEvent.isPresent());
+    }
+
+    @Test
+    void givenAnActiveMember_whenCallsActivate_thenShouldDoNothing() {
+
+        final var expectedId = MemberID.of("123");
+        final var expectedUsername = Username.of("user");
+        final var expectedEmail = Email.of("email@email.com");
+        final var expectedNickname = Nickname.of("user_nickname");
+        final var expectedCreateAt = Instant.now();
+        final var expectedIsActive = true;
+        final var expectedSystems = Set.of(System.DRIVE, System.MEMBER);
+        final var expectedUpdatedAt = expectedCreateAt;
+        final var expectedMember = Member.with(
+                expectedId,
+                expectedUsername,
+                expectedEmail,
+                expectedNickname,
+                true,
+                expectedSystems,
+                expectedCreateAt,
+                expectedUpdatedAt);
+
+        final var actualMember = assertDoesNotThrow(() -> expectedMember.activate());
+
+        assertEquals(expectedId, actualMember.getId());
+        assertEquals(expectedUsername, actualMember.getUsername());
+        assertEquals(expectedEmail, actualMember.getEmail());
+        assertEquals(expectedNickname, actualMember.getNickname());
+        assertEquals(expectedIsActive, actualMember.isActive());
+        assertEquals(expectedCreateAt, actualMember.getCreatedAt());
+        assertTrue(actualMember.getAvailableSystems().containsAll(expectedSystems));
+        assertEquals(expectedSystems.size(), actualMember.getAvailableSystems().size());
+        assertEquals(actualMember.getCreatedAt(), actualMember.getUpdatedAt());
+        final var anotherEvent = actualMember.nextEvent();
+        assertFalse(anotherEvent.isPresent());
+    }
+
 }
