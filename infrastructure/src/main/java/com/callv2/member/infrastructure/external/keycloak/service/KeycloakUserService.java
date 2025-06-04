@@ -50,7 +50,7 @@ public class KeycloakUserService {
         return userId;
     }
 
-    public void updateUser(final UserRepresentation userRepresentation, final String userId) {
+    public void updateUser(final String userId, final UserRepresentation userRepresentation) {
         onStatus(client.put()
                 .uri("/admin/realms/{realm}/users/{userId}", realm, userId)
                 .bodyValue(userRepresentation)

@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ValueMapping;
 
 import com.callv2.member.domain.member.entity.Member;
 import com.callv2.member.domain.member.valueobject.PreMember;
+import com.callv2.member.domain.member.valueobject.System;
 import com.callv2.member.infrastructure.external.keycloak.model.CredentialRepresentation;
 import com.callv2.member.infrastructure.external.keycloak.model.UserRepresentation;
-
-import org.mapstruct.Named;
 
 @Mapper
 public interface KeycloakUserMapper {
@@ -40,13 +40,10 @@ public interface KeycloakUserMapper {
     @Mapping(target = "username", source = "username.value")
     @Mapping(target = "email", source = "email.value")
     @Mapping(target = "credentials", source = "preMember")
-    @Mapping(target = "groups", expression = "java(defaulMemberstGroups())")
+    @Mapping(target = "groups", ignore = true)
     @Mapping(target = "enabled", constant = "false")
     UserRepresentation toUserRepresentation(PreMember preMember);
 
-    @Mapping(target = "id", source = "id.value")
-    @Mapping(target = "username", source = "username.value")
-    @Mapping(target = "email", source = "email.value")
     @Mapping(target = "firstName", ignore = true)
     @Mapping(target = "lastName", ignore = true)
     @Mapping(target = "emailVerified", ignore = true)
@@ -55,7 +52,6 @@ public interface KeycloakUserMapper {
     @Mapping(target = "self", ignore = true)
     @Mapping(target = "origin", ignore = true)
     @Mapping(target = "createdTimestamp", ignore = true)
-    @Mapping(target = "enabled", source = "active")
     @Mapping(target = "totp", ignore = true)
     @Mapping(target = "federationLink", ignore = true)
     @Mapping(target = "serviceAccountClientId", ignore = true)
@@ -69,8 +65,12 @@ public interface KeycloakUserMapper {
     @Mapping(target = "notBefore", ignore = true)
     @Mapping(target = "applicationRoles", ignore = true)
     @Mapping(target = "socialLinks", ignore = true)
-    @Mapping(target = "groups", ignore = true)
     @Mapping(target = "access", ignore = true)
+    @Mapping(target = "id", source = "id.value")
+    @Mapping(target = "username", source = "username.value")
+    @Mapping(target = "email", source = "email.value")
+    @Mapping(target = "groups", source = "availableSystems")
+    @Mapping(target = "enabled", source = "active")
     UserRepresentation toUserRepresentation(Member member);
 
     @Mapping(target = "id", ignore = true)
@@ -98,9 +98,10 @@ public interface KeycloakUserMapper {
         return credentialRepresentation != null ? List.of(credentialRepresentation) : List.of();
     }
 
-    @Named("defaulMemberstGroups")
-    default List<String> defaulMemberstGroups() {
-        return List.of("membros");
-    }
+    @ValueMapping(target = "/callv2/drive/member", source = "DRIVE")
+    @ValueMapping(target = "/callv2/member/member", source = "MEMBER")
+    String toString(System source);
+
+    List<String> toStringList(List<System> systems);
 
 }

@@ -95,7 +95,7 @@ public class DefaultMemberGateway implements MemberGateway {
 
         if (performKeycloakUpdate(member))
             this.tokenKeycloakUserService
-                    .updateUser(keycloakUserMapper.toUserRepresentation(member), member.getId().getValue());
+                    .updateUser(member.getId().getValue(), keycloakUserMapper.toUserRepresentation(member));
 
         return save(member);
     }
@@ -114,7 +114,8 @@ public class DefaultMemberGateway implements MemberGateway {
 
         return !(memberJpa.getEmail().equals(member.getEmail().value())
                 && memberJpa.getUsername().equals(member.getUsername().value())
-                && memberJpa.getActive() == member.isActive());
+                && memberJpa.getActive() == member.isActive()
+                && memberJpa.getSystems().equals(member.getAvailableSystems()));
 
     }
 
