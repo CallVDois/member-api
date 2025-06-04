@@ -28,15 +28,7 @@ public class DefaultUpdateMemberSystemAccessUseCase extends UpdateMemberSystemAc
                 .findById(MemberID.of(input.memberId()))
                 .orElseThrow(() -> NotFoundException.with(Member.class, input.memberId()));
 
-        member
-                .getAvailableSystems()
-                .stream()
-                .filter(system -> !input.systems().contains(system))
-                .forEach(member::removeSystem);
-
-        input.systems().forEach(member::addSystem);
-
-        eventDispatcher.notify(memberGateway.update(member));
+        eventDispatcher.notify(memberGateway.update(member.updateAvailableSystems(input.systems())));
     }
 
 }
