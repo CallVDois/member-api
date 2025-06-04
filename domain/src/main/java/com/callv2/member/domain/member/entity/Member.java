@@ -112,27 +112,8 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
         return this;
     }
 
-    public Member addAvailableSystem(final System system) {
-        if (this.availableSystems.add(system)) {
-            this.updatedAt = Instant.now();
-            this.events.add(MemberUpdatedEvent.create("MemberAggregate", MemberUpdatedEvent.Data.of(this)));
-        }
-
-        return this;
-    }
-
-    public Member removeAvailableSystem(final System system) {
-        if (this.availableSystems.remove(system)) {
-            this.updatedAt = Instant.now();
-            this.events.add(MemberUpdatedEvent.create("MemberAggregate", MemberUpdatedEvent.Data.of(this)));
-        }
-        return this;
-    }
-
     public Member updateAvailableSystems(final Set<System> systems) {
-        if (systems == null
-                || systems.isEmpty()
-                || (availableSystems.containsAll(systems) && availableSystems.size() == systems.size()))
+        if (systems == null || (availableSystems.equals(systems)))
             return this;
 
         this.availableSystems.clear();
