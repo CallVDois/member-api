@@ -19,4 +19,8 @@ public class ValidationException extends DomainException {
         return new ValidationException(message, List.of(error));
     }
 
+    public static ValidationException with(final String message, final List<Error> errors) {
+        return new ValidationException(message, errors);
+    }
+
 }

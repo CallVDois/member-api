@@ -10,6 +10,8 @@ import com.callv2.member.application.member.activation.TogleMemberActivationUseC
 import com.callv2.member.application.member.retrieve.get.GetMemberInput;
 import com.callv2.member.application.member.retrieve.get.GetMemberUseCase;
 import com.callv2.member.application.member.retrieve.list.ListMembersUseCase;
+import com.callv2.member.application.member.update.system.UpdateMemberSystemAccessInput;
+import com.callv2.member.application.member.update.system.UpdateMemberSystemAccessUseCase;
 import com.callv2.member.domain.pagination.Filter;
 import com.callv2.member.domain.pagination.Filter.Operator;
 import com.callv2.member.domain.pagination.Page;
@@ -20,20 +22,24 @@ import com.callv2.member.infrastructure.api.MemberAdminAPI;
 import com.callv2.member.infrastructure.filter.adapter.QueryAdapter;
 import com.callv2.member.infrastructure.member.model.GetMemberResponse;
 import com.callv2.member.infrastructure.member.model.MemberListResponse;
+import com.callv2.member.infrastructure.member.model.UpdateMemberSystemsRequest;
 import com.callv2.member.infrastructure.member.presenter.MemberPresenter;
 
 @Controller
 public class MemberAdminController implements MemberAdminAPI {
 
     private final TogleMemberActivationUseCase togleMemberActivationUseCase;
+    private final UpdateMemberSystemAccessUseCase updateMemberSystemAccessUseCase;
     private final GetMemberUseCase getMemberUseCase;
     private final ListMembersUseCase listMembersUseCase;
 
     public MemberAdminController(
             final TogleMemberActivationUseCase togleMemberActivationUseCase,
+            final UpdateMemberSystemAccessUseCase updateMemberSystemAccessUseCase,
             final GetMemberUseCase getMemberUseCase,
             final ListMembersUseCase listMembersUseCase) {
         this.togleMemberActivationUseCase = togleMemberActivationUseCase;
+        this.updateMemberSystemAccessUseCase = updateMemberSystemAccessUseCase;
         this.getMemberUseCase = getMemberUseCase;
         this.listMembersUseCase = listMembersUseCase;
     }
@@ -41,6 +47,12 @@ public class MemberAdminController implements MemberAdminAPI {
     @Override
     public ResponseEntity<Void> toggleActive(final String id, final boolean active) {
         togleMemberActivationUseCase.execute(TogleMemberActivationInput.of(id, active));
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updateAvailableSystems(String id, UpdateMemberSystemsRequest request) {
+        updateMemberSystemAccessUseCase.execute(UpdateMemberSystemAccessInput.of(id, request.systems()));
         return ResponseEntity.noContent().build();
     }
 

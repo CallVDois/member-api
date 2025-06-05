@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,6 +17,7 @@ import com.callv2.member.domain.pagination.Pagination;
 import com.callv2.member.infrastructure.api.controller.ApiError;
 import com.callv2.member.infrastructure.member.model.GetMemberResponse;
 import com.callv2.member.infrastructure.member.model.MemberListResponse;
+import com.callv2.member.infrastructure.member.model.UpdateMemberSystemsRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,6 +40,16 @@ public interface MemberAdminAPI {
     ResponseEntity<Void> toggleActive(
             @PathVariable(value = "id", required = true) String id,
             @RequestParam(value = "active", defaultValue = "true") boolean active);
+
+    @PutMapping("{id}/systems")
+    @Operation(summary = "Update member available systems", description = "This method update a member available systems", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Member available systems is successfuly updated"),
+            @ApiResponse(responseCode = "404", description = "Member not found")
+    })
+    ResponseEntity<Void> updateAvailableSystems(
+            @PathVariable(value = "id", required = true) String id,
+            @RequestBody UpdateMemberSystemsRequest request);
 
     @GetMapping("{id}")
     @Operation(summary = "Get member account", description = "This method get a member account", security = @SecurityRequirement(name = "bearerAuth"))
