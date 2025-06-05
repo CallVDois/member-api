@@ -42,14 +42,14 @@ public class KeycloakGroupService {
         final StringBuilder pathBuilder = new StringBuilder();
         pathBuilder.append("/" + group.name());
 
-        do {
+        while (!pathBuilder.toString().equals(path)) {
             group = getGroupChildrens(group.id())
                     .stream()
                     .filter(g -> path.startsWith(g.path()))
                     .findAny()
                     .orElseThrow(() -> NotFoundException.from("Group not found for path: " + path));
             pathBuilder.append("/" + group.name());
-        } while (!pathBuilder.toString().equals(path));
+        }
 
         return group;
     }
