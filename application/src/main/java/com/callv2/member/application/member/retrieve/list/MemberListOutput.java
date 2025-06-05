@@ -2,7 +2,7 @@ package com.callv2.member.application.member.retrieve.list;
 
 import java.time.Instant;
 
-import com.callv2.member.domain.member.Member;
+import com.callv2.member.domain.member.entity.Member;
 
 public record MemberListOutput(
         String id,

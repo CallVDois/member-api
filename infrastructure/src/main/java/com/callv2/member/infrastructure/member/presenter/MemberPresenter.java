@@ -14,6 +14,7 @@ public interface MemberPresenter {
                 output.email(),
                 output.nickname(),
                 output.active(),
+                output.availableSystems(),
                 output.createdAt(),
                 output.updatedAt());
     }

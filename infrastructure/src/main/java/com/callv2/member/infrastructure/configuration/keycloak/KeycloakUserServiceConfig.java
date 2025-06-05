@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.callv2.member.infrastructure.keycloak.service.KeycloakUserService;
+import com.callv2.member.infrastructure.external.keycloak.service.KeycloakUserService;
 
 @Configuration
 public class KeycloakUserServiceConfig {
