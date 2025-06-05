@@ -2,17 +2,23 @@ package com.callv2.member.application.member.activation;
 
 import java.util.Objects;
 
+import com.callv2.member.domain.event.EventDispatcher;
 import com.callv2.member.domain.exception.NotFoundException;
-import com.callv2.member.domain.member.Member;
-import com.callv2.member.domain.member.MemberGateway;
-import com.callv2.member.domain.member.MemberID;
+import com.callv2.member.domain.member.entity.Member;
+import com.callv2.member.domain.member.entity.MemberID;
+import com.callv2.member.domain.member.gateway.MemberGateway;
 
 public class DefaultTogleMemberActivationUseCase extends TogleMemberActivationUseCase {
 
     private final MemberGateway memberGateway;
 
-    public DefaultTogleMemberActivationUseCase(final MemberGateway memberGateway) {
+    private final EventDispatcher eventDispatcher;
+
+    public DefaultTogleMemberActivationUseCase(
+            final MemberGateway memberGateway,
+            final EventDispatcher eventDispatcher) {
         this.memberGateway = Objects.requireNonNull(memberGateway);
+        this.eventDispatcher = Objects.requireNonNull(eventDispatcher);
     }
 
     @Override
@@ -27,7 +33,7 @@ public class DefaultTogleMemberActivationUseCase extends TogleMemberActivationUs
         else
             member.deactivate();
 
-        memberGateway.update(member);
+        eventDispatcher.notify(memberGateway.update(member));
     }
 
 }

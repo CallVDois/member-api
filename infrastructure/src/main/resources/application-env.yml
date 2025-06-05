@@ -3,7 +3,7 @@ environment: ${PROJECT_ENVIRONMENT:unknown}
 
 server:
   port: ${SERVER_PORT:8080}
-  forward-headers-strategy: ${FORWARD_HEADERS_STRATEGY:none}
+  forward-headers-strategy: ${FORWARD_HEADERS_STRATEGY:framework}
 
 security:
   cors:
@@ -29,5 +29,10 @@ postgres:
   password: ${POSTGRES_PASSWORD}
 
 db:
-  ddl-auto: ${DB_DDL_AUTO}
   show-sql: ${DB_SHOW_SQL}
+
+rabbitmq:
+  host: ${RABBITMQ_HOST}
+  port: ${RABBITMQ_PORT}
+  username: ${RABBITMQ_USERNAME}
+  password: ${RABBITMQ_PASSWORD}
