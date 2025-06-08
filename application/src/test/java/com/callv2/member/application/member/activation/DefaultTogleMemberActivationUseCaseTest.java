@@ -66,7 +66,8 @@ public class DefaultTogleMemberActivationUseCaseTest {
                 false,
                 expectedAvailableSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var input = TogleMemberActivationInput.of(expectedIdValue, expectedIsActive);
 
@@ -131,7 +132,8 @@ public class DefaultTogleMemberActivationUseCaseTest {
                 true,
                 expectedAvailableSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var input = TogleMemberActivationInput.of(expectedIdValue, expectedIsActive);
 

@@ -30,7 +30,8 @@ public record MemberUpdatedEvent(
             boolean isActive,
             Set<System> systems,
             Instant createdAt,
-            Instant updatedAt) implements Serializable {
+            Instant updatedAt,
+            Long synchronizedVersion) implements Serializable {
 
         public static Data of(final Member member) {
             return new Data(
@@ -41,7 +42,8 @@ public record MemberUpdatedEvent(
                     member.isActive(),
                     member.getAvailableSystems(),
                     member.getCreatedAt(),
-                    member.getUpdatedAt());
+                    member.getUpdatedAt(),
+                    member.getSynchronizedVersion());
         }
     }
 

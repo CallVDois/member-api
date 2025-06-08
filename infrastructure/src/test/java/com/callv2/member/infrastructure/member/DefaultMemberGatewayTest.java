@@ -207,7 +207,8 @@ public class DefaultMemberGatewayTest {
                 false,
                 Set.of(System.MEMBER),
                 expectedCreatedAt,
-                expectedCreatedAt);
+                expectedCreatedAt,
+                10L);
 
         final var updatedMember = Member.with(
                 expectedMemberId,
@@ -217,7 +218,8 @@ public class DefaultMemberGatewayTest {
                 expectIsActive,
                 expectedAvailableSystems,
                 expectedCreatedAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                oldMember.getSynchronizedVersion() + 1);
 
         final var driveGroupId = "driveGroupId";
         final var driveGroupPath = keycloakGroupMapper.toGroupPath(System.DRIVE);
@@ -329,7 +331,8 @@ public class DefaultMemberGatewayTest {
                 expectIsActive,
                 expectedAvailableSystems,
                 expectedCreatedAt,
-                expectedCreatedAt);
+                expectedCreatedAt,
+                0L);
 
         final var updatedMember = Member.with(
                 expectedMemberId,
@@ -339,7 +342,8 @@ public class DefaultMemberGatewayTest {
                 expectIsActive,
                 expectedAvailableSystems,
                 expectedCreatedAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                oldMember.getSynchronizedVersion() + 1);
 
         final var driveGroupId = "driveGroupId";
         final var driveGroupPath = keycloakGroupMapper.toGroupPath(System.DRIVE);
