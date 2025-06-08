@@ -112,12 +112,8 @@ public class DefaultMemberGatewayTest {
     @Test
     void givenAValidPreMember_whenCallsCreateAndKeycloakCreateUserThrowsARandomException_thenShouldNotPersistMemberInKeycloakAndOwnDatabase() {
 
-        final var expectedMemberIdValue = "123";
         final var expectedUserName = Username.of("username");
         final var expectedEmail = Email.of("email@email.com");
-        final var expectedNickname = Nickname.of(expectedUserName.value());
-        final var expectedIsActive = false;
-        final var expectedAvailableSystems = Set.<System>of();
         final var expectedPassword = Password.of("password");
 
         final var expectedRamdomException = new RuntimeException("Keycloak create user error");
@@ -150,9 +146,6 @@ public class DefaultMemberGatewayTest {
         final var expectedMemberIdValue = "123";
         final var expectedUserName = Username.of("username");
         final var expectedEmail = Email.of("email@email.com");
-        final var expectedNickname = Nickname.of(expectedUserName.value());
-        final var expectedIsActive = false;
-        final var expectedAvailableSystems = Set.<System>of();
         final var expectedPassword = Password.of("password");
 
         final var preMember = PreMember.with(
@@ -251,8 +244,6 @@ public class DefaultMemberGatewayTest {
                 Map.of(),
                 Map.of());
 
-        final var memberJpaEntity = MemberJpaEntity.fromDomain(updatedMember);
-
         when(memberJpaRepository.findById(eq(expectedMemberId.getValue())))
                 .thenReturn(Optional.of(MemberJpaEntity.fromDomain(oldMember)));
 
@@ -344,38 +335,6 @@ public class DefaultMemberGatewayTest {
                 expectedCreatedAt,
                 expectedUpdatedAt,
                 oldMember.getSynchronizedVersion() + 1);
-
-        final var driveGroupId = "driveGroupId";
-        final var driveGroupPath = keycloakGroupMapper.toGroupPath(System.DRIVE);
-        final var drivegroupRepresentation = new GroupRepresentation(
-                driveGroupId,
-                "driveGroupName",
-                "driveGroupDescription",
-                driveGroupPath,
-                null,
-                0L,
-                List.of(),
-                Map.of(),
-                List.of(),
-                Map.of(),
-                Map.of());
-
-        final var memberGroupId = "memberGroupId";
-        final var memberGroupPath = keycloakGroupMapper.toGroupPath(System.MEMBER);
-        final var memberGroupRepresentation = new GroupRepresentation(
-                memberGroupId,
-                "memberGroupName",
-                "memberGroupDescription",
-                memberGroupPath,
-                null,
-                0L,
-                List.of(),
-                Map.of(),
-                List.of(),
-                Map.of(),
-                Map.of());
-
-        final var memberJpaEntity = MemberJpaEntity.fromDomain(updatedMember);
 
         when(memberJpaRepository.findById(eq(expectedMemberId.getValue())))
                 .thenReturn(Optional.of(MemberJpaEntity.fromDomain(oldMember)));
