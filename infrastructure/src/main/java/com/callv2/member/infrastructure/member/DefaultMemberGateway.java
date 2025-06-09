@@ -155,6 +155,7 @@ public class DefaultMemberGateway implements MemberGateway {
 
         final List<String> actualUserGroupIds = this.clientKeycloakUserService.getGroups(userId)
                 .stream()
+                .filter(groupRepresentation -> !"/callv2/admin".equals(groupRepresentation.path()))
                 .map(GroupRepresentation::id)
                 .toList();
 
