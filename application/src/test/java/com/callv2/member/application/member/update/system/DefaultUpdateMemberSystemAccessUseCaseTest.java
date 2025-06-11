@@ -70,7 +70,8 @@ public class DefaultUpdateMemberSystemAccessUseCaseTest {
                 expectIsActive,
                 Set.of(),
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         assertTrue(expectedMember.nextEvent().isEmpty());
         assertTrue(expectedMember.getAvailableSystems().isEmpty());

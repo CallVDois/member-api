@@ -1,18 +1,8 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.flywaydb:flyway-database-postgresql:11.8.2'
-    }
-}
-
 plugins {
     id 'java'
     id 'application'
     id 'org.springframework.boot' version '3.4.6'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'org.flywaydb.flyway' version '11.8.2'
 }
 
 group = 'com.callv2'
@@ -53,9 +43,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    testImplementation 'org.flywaydb:flyway-core'
-    testImplementation 'org.flywaydb:flyway-database-postgresql'
     
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.15.2'
@@ -77,11 +64,4 @@ compileJava {
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-
-flyway {
-    url = System.getenv('FLYWAY_DB') ?: 'jdbc:postgresql://localhost:5432/postgres'
-    user = System.getenv('FLYWAY_USER') ?: 'postgres'
-    password = System.getenv('FLYWAY_PASS') ?: 'postgres'
-    cleanDisabled = false
 }

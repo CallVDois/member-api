@@ -32,6 +32,8 @@ db:
   show-sql: ${DB_SHOW_SQL}
 
 rabbitmq:
+  virtual-host: ${RABBITMQ_VIRTUAL_HOST:/}
+  auto-create: ${RABBITMQ_AUTO_CREATE}
   host: ${RABBITMQ_HOST}
   port: ${RABBITMQ_PORT}
   username: ${RABBITMQ_USERNAME}

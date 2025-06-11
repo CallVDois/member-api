@@ -71,7 +71,8 @@ public class MemberTest {
                 false,
                 Set.of(),
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var expectedSystems = Set.of(System.DRIVE);
 
@@ -114,7 +115,8 @@ public class MemberTest {
                 false,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var inputSystems = Set.of(System.DRIVE);
         final var actualMember = assertDoesNotThrow(() -> expectedMember.updateAvailableSystems(inputSystems));
@@ -150,7 +152,8 @@ public class MemberTest {
                 false,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.updateAvailableSystems(null));
 
@@ -185,7 +188,8 @@ public class MemberTest {
                 false,
                 Set.of(System.DRIVE, System.MEMBER),
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var input = Set.<System>of();
         final var actualMember = assertDoesNotThrow(() -> expectedMember.updateAvailableSystems(input));
@@ -228,7 +232,8 @@ public class MemberTest {
                 false,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.activate());
 
@@ -269,7 +274,8 @@ public class MemberTest {
                 true,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.deactivate());
 
@@ -310,7 +316,8 @@ public class MemberTest {
                 false,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.deactivate());
 
@@ -346,7 +353,8 @@ public class MemberTest {
                 true,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.activate());
 

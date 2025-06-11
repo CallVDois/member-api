@@ -76,7 +76,8 @@ public class DefaultCreateMemberUseCaseTest {
                 expectedIsActive,
                 expectedAvailableSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         when(memberGateway.create(eq(expectedPreMember)))
                 .thenReturn(expectedMember);

@@ -49,7 +49,8 @@ public class DefaultListMembersUseCaseTest {
                 true,
                 Set.of(System.DRIVE, System.MEMBER),
                 Instant.now(),
-                Instant.now());
+                Instant.now(),
+                0L);
 
         final var expectedMember2 = Member.with(
                 MemberID.of("2"),
@@ -59,7 +60,8 @@ public class DefaultListMembersUseCaseTest {
                 true,
                 Set.of(System.DRIVE),
                 Instant.now(),
-                Instant.now());
+                Instant.now(),
+                0L);
 
         final var expectedMembers = List.of(expectedMember1, expectedMember2);
 

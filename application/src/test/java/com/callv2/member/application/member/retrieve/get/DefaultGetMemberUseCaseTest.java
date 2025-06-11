@@ -58,7 +58,8 @@ public class DefaultGetMemberUseCaseTest {
                 expectedIsActive,
                 expectedAvailableSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         when(memberGateway.findById(eq(expectedMemberId)))
                 .thenReturn(Optional.of(expectedMember));
