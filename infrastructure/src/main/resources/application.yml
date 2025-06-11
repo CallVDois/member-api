@@ -41,7 +41,6 @@ spring:
       ddl-auto: none
     show-sql: ${db.show-sql}
   rabbitmq:
-    virtual-host: ${rabbitmq.virtual-host}
     dynamic: ${rabbitmq.auto-create}
     host: ${rabbitmq.host}
     port: ${rabbitmq.port}
