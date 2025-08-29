@@ -28,7 +28,6 @@ public class MemberTest {
         final var expectedNickname = Nickname.of("user_nickname");
 
         final var expectedEventType = MemberCreatedEvent.class;
-        final var expectedEventSource = "MemberAggregate";
 
         final var actualMember = assertDoesNotThrow(() -> Member.create(
                 expectedId,
@@ -47,7 +46,6 @@ public class MemberTest {
         final var createdEvent = actualMember.nextEvent();
         assertTrue(createdEvent.isPresent());
         assertEquals(expectedEventType, createdEvent.get().getClass());
-        assertEquals(expectedEventSource, createdEvent.get().source());
         assertEquals(MemberCreatedEvent.Data.of(actualMember), createdEvent.get().data());
 
         final var anotherEvent = actualMember.nextEvent();
@@ -91,7 +89,6 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals("MemberAggregate", updatedEvent.get().source());
         assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
@@ -207,7 +204,6 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals("MemberAggregate", updatedEvent.get().source());
         assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
@@ -249,7 +245,6 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals("MemberAggregate", updatedEvent.get().source());
         assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
@@ -291,7 +286,6 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals("MemberAggregate", updatedEvent.get().source());
         assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());

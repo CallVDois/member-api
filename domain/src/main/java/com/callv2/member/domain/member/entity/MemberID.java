@@ -12,4 +12,9 @@ public class MemberID extends Identifier<String> {
         return new MemberID(id);
     }
 
+    @Override
+    public String getStringValue() {
+        return this.id;
+    }
+
 }

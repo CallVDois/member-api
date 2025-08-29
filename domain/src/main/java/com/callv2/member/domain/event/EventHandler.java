@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public interface EventHandler<D extends Serializable> {
 
-    String eventName();
+    String eventKey();
 
     void handle(Event<D> event);
 
