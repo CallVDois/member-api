@@ -46,7 +46,7 @@ public class MemberTest {
         final var createdEvent = actualMember.nextEvent();
         assertTrue(createdEvent.isPresent());
         assertEquals(expectedEventType, createdEvent.get().getClass());
-        assertEquals(MemberCreatedEvent.Data.of(actualMember), createdEvent.get().data());
+        assertEquals(MemberCreatedEvent.Data.of(actualMember), createdEvent.get().getData());
 
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent(), "There should be no more events after the first one");
@@ -89,7 +89,7 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().getData());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
     }
@@ -204,7 +204,7 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().getData());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
     }
@@ -245,7 +245,7 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().getData());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
     }
@@ -286,7 +286,7 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().getData());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
     }
