@@ -17,13 +17,15 @@ import com.callv2.member.infrastructure.messaging.producer.rabbitmq.RabbitMQProd
 @Configuration
 public class RabbitMQConfig {
 
-    private static final String MEMBER_EXCHANGE_NAME = "member.exchange.teste";
-    private static final String EVENT_HUB_EXCHANGE_NAME = "event.hub.exchange.teste";
+    private static final String EVENT_HUB_EXCHANGE_NAME = "eventhub.exchange";
+    private static final String EVENT_HUB_EXCHANGE_ROUTING_KEY = "member.#.event";
 
-    private static final String MEMBER_CREATED_ROUTING_KEY = "member.created";
-    private static final String MEMBER_UPDATED_ROUTING_KEY = "member.updated";
+    private static final String MEMBER_EXCHANGE_NAME = "member.exchange";
+    private static final String MEMBER_DLX_EXCHANGE_NAME = "member.dlx.exchange";
 
-    private static final String EVENT_HUB_ROUTING_KEY = "#";
+    private static final String MEMBER_CREATED_ROUTING_KEY = "member.member.created.event";
+
+    private static final String MEMBER_UPDATED_ROUTING_KEY = "member.member.updated.event";
 
     @Bean
     MessageConverter jsonMessageConverter() {
@@ -49,18 +51,15 @@ public class RabbitMQConfig {
     @Configuration
     static class Admin {
 
-        private final TopicExchange memberExchange = new TopicExchange(MEMBER_EXCHANGE_NAME);
         private final TopicExchange eventHubExchange = new TopicExchange(EVENT_HUB_EXCHANGE_NAME);
 
-        private final Binding memberExchangeToEventHubExchange = BindingBuilder
+        private final TopicExchange memberExchange = new TopicExchange(MEMBER_EXCHANGE_NAME);
+        private final TopicExchange memberDlxExchange = new TopicExchange(MEMBER_DLX_EXCHANGE_NAME);
+
+        public final Binding memberEventsBinding = BindingBuilder
                 .bind(eventHubExchange)
                 .to(memberExchange)
-                .with(EVENT_HUB_ROUTING_KEY);
-
-        @Bean
-        TopicExchange memberExchange() {
-            return memberExchange;
-        }
+                .with(EVENT_HUB_EXCHANGE_ROUTING_KEY);
 
         @Bean
         TopicExchange eventHubExchange() {
@@ -68,8 +67,18 @@ public class RabbitMQConfig {
         }
 
         @Bean
-        Binding memberExchangeToEventHubExchange() {
-            return memberExchangeToEventHubExchange;
+        TopicExchange memberExchange() {
+            return memberExchange;
+        }
+
+        @Bean
+        TopicExchange memberDlxExchange() {
+            return memberDlxExchange;
+        }
+
+        @Bean
+        Binding memberEventsBinding() {
+            return memberEventsBinding;
         }
 
     }
