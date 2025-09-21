@@ -12,7 +12,7 @@ import com.callv2.member.infrastructure.messaging.producer.Producer;
 @Component
 public class MemberUpdatedEventMessagingHandler implements EventHandler<MemberUpdatedEvent.Data> {
 
-    private static final String EVENT_NAME = "member.updated";
+    private static final String EVENT_KEY = MemberUpdatedEvent.eventKey();
     private final Producer<Event<MemberUpdatedEvent.Data>> producer;
 
     public MemberUpdatedEventMessagingHandler(final Producer<Event<MemberUpdatedEvent.Data>> producer) {
@@ -20,8 +20,8 @@ public class MemberUpdatedEventMessagingHandler implements EventHandler<MemberUp
     }
 
     @Override
-    public String eventName() {
-        return EVENT_NAME;
+    public String eventKey() {
+        return EVENT_KEY;
     }
 
     @Override

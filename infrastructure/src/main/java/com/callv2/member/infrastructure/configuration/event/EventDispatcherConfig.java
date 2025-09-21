@@ -14,7 +14,7 @@ public class EventDispatcherConfig {
     @Bean
     EventDispatcher eventDispatcher(final List<EventHandler<?>> eventHandlers) {
         final var dispatcher = new EventDispatcher();
-        eventHandlers.forEach(handler -> dispatcher.register(handler.eventName(), handler));
+        eventHandlers.forEach(handler -> dispatcher.register(handler.eventKey(), handler));
         return dispatcher;
     }
 

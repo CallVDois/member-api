@@ -69,7 +69,7 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
         final Instant now = Instant.now();
 
         final Member member = new Member(id, username, email, nickname, false, new HashSet<>(), now, now, 0L);
-        member.events.add(MemberCreatedEvent.create("MemberAggregate", MemberCreatedEvent.Data.of(member)));
+        member.events.add(MemberCreatedEvent.create(member));
         return member;
     }
 
@@ -113,7 +113,7 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
         this.active = true;
         this.updatedAt = Instant.now();
         this.synchronizedVersion++;
-        this.events.add(MemberUpdatedEvent.create("MemberAggregate", MemberUpdatedEvent.Data.of(this)));
+        this.events.add(MemberUpdatedEvent.create(this));
         return this;
     }
 
@@ -125,7 +125,7 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
         this.active = false;
         this.updatedAt = Instant.now();
         this.synchronizedVersion++;
-        this.events.add(MemberUpdatedEvent.create("MemberAggregate", MemberUpdatedEvent.Data.of(this)));
+        this.events.add(MemberUpdatedEvent.create(this));
         return this;
     }
 
@@ -137,7 +137,7 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
         this.availableSystems.addAll(systems);
         this.updatedAt = Instant.now();
         this.synchronizedVersion++;
-        this.events.add(MemberUpdatedEvent.create("MemberAggregate", MemberUpdatedEvent.Data.of(this)));
+        this.events.add(MemberUpdatedEvent.create(this));
         return this;
     }
 
