@@ -92,7 +92,7 @@ public class DefaultMemberGateway implements MemberGateway {
                 searchQuery.filters());
 
         final org.springframework.data.domain.Page<MemberJpaEntity> pageResult = this.memberJpaRepository
-                .findAll(Specification.where(specification), page);
+                .findAll(specification, page);
 
         return new Page<>(
                 pageResult.getNumber(),
