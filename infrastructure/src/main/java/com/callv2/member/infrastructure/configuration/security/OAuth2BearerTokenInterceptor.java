@@ -24,7 +24,7 @@ public class OAuth2BearerTokenInterceptor implements ClientHttpRequestIntercepto
         request.getHeaders()
                 .setBearerAuth(Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                         .map(Authentication::getCredentials)
-                        .map(it -> (Jwt) it)
+                        .map(jwt -> (Jwt) jwt)
                         .map(Jwt::getTokenValue)
                         .orElse(""));
 
