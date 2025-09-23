@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.callv2.member.domain.member.entity.Member;
 import com.callv2.member.domain.member.entity.MemberID;
@@ -75,6 +76,7 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Member> findById(final MemberID id) {
         return this.memberJpaRepository
                 .findById(id.getValue())
@@ -82,6 +84,7 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Member> findAll(SearchQuery searchQuery) {
 
         final var page = QueryAdapter.of(searchQuery.pagination());

@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 
 @Configuration
 public class OAuth2ClientConfig {
@@ -28,17 +27,6 @@ public class OAuth2ClientConfig {
         authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
 
         return authorizedClientManager;
-    }
-
-    @Bean("keycloakOauth2Client")
-    ServletOAuth2AuthorizedClientExchangeFilterFunction keycloakOauth2Client(
-            final OAuth2AuthorizedClientManager authorizedClientManager) {
-
-        ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2Client = new ServletOAuth2AuthorizedClientExchangeFilterFunction(
-                authorizedClientManager);
-        oauth2Client.setDefaultClientRegistrationId("keycloak");
-
-        return oauth2Client;
     }
 
 }
