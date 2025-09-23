@@ -8,8 +8,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClient.ResponseSpec;
 
 import com.callv2.member.infrastructure.exception.BadRequestException;
 import com.callv2.member.infrastructure.exception.ConflictException;
@@ -21,29 +21,29 @@ import com.callv2.member.infrastructure.external.keycloak.model.Error;
 import com.callv2.member.infrastructure.external.keycloak.model.ErrorRepresentation;
 import com.callv2.member.infrastructure.external.keycloak.model.GroupRepresentation;
 import com.callv2.member.infrastructure.external.keycloak.model.UserRepresentation;
-import com.callv2.member.infrastructure.webclient.WebClientExceptionHandler;
+import com.callv2.member.infrastructure.restclient.RestClientExceptionHandler;
 
 public class KeycloakUserService {
 
-    private final WebClient client;
+    private final RestClient client;
     private final String realm;
 
     private final Pattern USER_ID_LOCATION_PATTERN = Pattern.compile("(?<=(.*\\/users\\/)).*");
 
     public KeycloakUserService(
-            final WebClient client,
+            final RestClient client,
             final String realm) {
         this.client = client;
         this.realm = realm;
     }
 
     public String createUser(final UserRepresentation userRepresentation) {
+
         final ResponseEntity<Void> response = onStatus(client.post()
                 .uri("/admin/realms/{realm}/users", realm)
-                .bodyValue(userRepresentation)
+                .body(userRepresentation)
                 .retrieve())
-                .toBodilessEntity()
-                .block();
+                .toBodilessEntity();
 
         final String userId = Optional
                 .ofNullable(response.getHeaders().getLocation())
@@ -57,72 +57,92 @@ public class KeycloakUserService {
     public void updateUser(final String userId, final UserRepresentation userRepresentation) {
         onStatus(client.put()
                 .uri("/admin/realms/{realm}/users/{userId}", realm, userId)
-                .bodyValue(userRepresentation)
+                .body(userRepresentation)
+                // .bodyValue(userRepresentation)
                 .retrieve())
-                .toBodilessEntity()
-                .block();
+                .toBodilessEntity();
     }
 
     public void deleteUser(final String userId) {
         onStatus(client.delete()
                 .uri("/admin/realms/{realm}/users/{userId}", realm, userId)
                 .retrieve())
-                .toBodilessEntity()
-                .block();
+                .toBodilessEntity();
     }
 
     public List<GroupRepresentation> getGroups(final String userId) {
         return onStatus(client.get()
                 .uri("/admin/realms/{realm}/users/{userId}/groups", realm, userId)
                 .retrieve())
-                .bodyToMono(new ParameterizedTypeReference<List<GroupRepresentation>>() {
-                })
-                .block();
+                .body(new ParameterizedTypeReference<List<GroupRepresentation>>() {
+                });
     }
 
     public void addGroup(final String userId, final String groupId) {
         onStatus(client.put()
                 .uri("/admin/realms/{realm}/users/{userId}/groups/{groupId}", realm, userId, groupId)
                 .retrieve())
-                .toBodilessEntity()
-                .block();
+                .toBodilessEntity();
     }
 
     public void deleteGroup(final String userId, final String groupId) {
         onStatus(client.delete()
                 .uri("/admin/realms/{realm}/users/{userId}/groups/{groupId}", realm, userId, groupId)
                 .retrieve())
-                .toBodilessEntity()
-                .block();
+                .toBodilessEntity();
     }
 
     private ResponseSpec onStatus(final ResponseSpec responseSpec) {
         return responseSpec
 
-                .onStatus(HttpStatus.BAD_REQUEST::isSameCodeAs,
-                        WebClientExceptionHandler
-                                .throwsException(
-                                        ErrorRepresentation.class,
-                                        error -> BadRequestException.from(error.errorMessage())))
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::isSameCodeAs,
+                        (request, response) -> RestClientExceptionHandler.throwsException(
+                                ErrorRepresentation.class,
+                                request,
+                                response,
+                                error -> BadRequestException.from(error.errorMessage())))
 
-                .onStatus(HttpStatus.UNAUTHORIZED::isSameCodeAs,
-                        WebClientExceptionHandler.throwsException(
-                                Error.class, error -> UnauthorizedException.from(error.error())))
+                .onStatus(
+                        HttpStatus.UNAUTHORIZED::isSameCodeAs,
+                        (request, response) -> RestClientExceptionHandler.throwsException(
+                                Error.class,
+                                request,
+                                response,
+                                error -> UnauthorizedException.from(error.error())))
 
-                .onStatus(HttpStatus.FORBIDDEN::isSameCodeAs,
-                        WebClientExceptionHandler.throwsException(Error.class,
+                .onStatus(
+                        HttpStatus.FORBIDDEN::isSameCodeAs,
+                        (request, response) -> RestClientExceptionHandler.throwsException(
+                                Error.class,
+                                request,
+                                response,
                                 error -> ForbiddenException.from(error.error())))
 
-                .onStatus(HttpStatus.CONFLICT::isSameCodeAs,
-                        WebClientExceptionHandler.throwsException(ErrorRepresentation.class,
+                .onStatus(
+                        HttpStatus.CONFLICT::isSameCodeAs,
+                        (request, response) -> RestClientExceptionHandler.throwsException(
+                                ErrorRepresentation.class,
+                                request,
+                                response,
                                 error -> ConflictException.from(error.errorMessage())))
 
-                .onStatus(HttpStatus.NOT_FOUND::isSameCodeAs,
-                        WebClientExceptionHandler.throwsException(ErrorRepresentation.class,
+                .onStatus(
+                        HttpStatus.NOT_FOUND::isSameCodeAs,
+                        (request, response) -> RestClientExceptionHandler.throwsException(
+                                ErrorRepresentation.class,
+                                request,
+                                response,
                                 error -> NotFoundException.from(error.errorMessage())))
 
-                .onStatus(HttpStatusCode::is5xxServerError,
-                        WebClientExceptionHandler.throwsException(String.class, InternalServerError::from));
+                .onStatus(
+                        HttpStatusCode::is5xxServerError,
+                        (request, response) -> RestClientExceptionHandler.throwsException(
+                                String.class,
+                                request,
+                                response,
+                                InternalServerError::from));
+
     }
 
 }

@@ -173,4 +173,11 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
         return synchronizedVersion;
     }
 
+    @Override
+    public String toString() {
+        return "Member [id=" + id + ", username=" + username + ", email=" + email + ", nickname=" + nickname
+                + ", availableSystems=" + availableSystems + ", active=" + active + ", createdAt=" + createdAt
+                + ", updatedAt=" + updatedAt + ", synchronizedVersion=" + synchronizedVersion + "]";
+    }
+
 }

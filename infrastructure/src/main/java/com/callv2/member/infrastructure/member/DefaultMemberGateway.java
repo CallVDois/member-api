@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.callv2.member.domain.member.entity.Member;
 import com.callv2.member.domain.member.entity.MemberID;
@@ -75,13 +76,13 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Member> findById(final MemberID id) {
-        return this.memberJpaRepository
-                .findById(id.getValue())
-                .map(MemberJpaEntity::toDomain);
+        return _findById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Member> findAll(SearchQuery searchQuery) {
 
         final var page = QueryAdapter.of(searchQuery.pagination());
@@ -104,9 +105,10 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
+    @Transactional
     public Member update(final Member member) {
 
-        final Optional<Member> actualMember = findById(member.getId());
+        final Optional<Member> actualMember = _findById(member.getId());
 
         // These two filters need to be separates because of a division inside the
         // Keycloak API where a user's group needs to be updated separetely
@@ -119,6 +121,12 @@ public class DefaultMemberGateway implements MemberGateway {
                 .ifPresent(actMember -> performKeycloakUserGroupUpdate(member));
 
         return save(member);
+    }
+
+    private Optional<Member> _findById(final MemberID id) {
+        return this.memberJpaRepository
+                .findById(id.getValue())
+                .map(MemberJpaEntity::toDomain);
     }
 
     private Member save(final Member member) {

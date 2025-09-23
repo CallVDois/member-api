@@ -18,7 +18,7 @@ public record Password(String value) implements ValueObject {
 
     @Override
     public final String toString() {
-        return "Password{value=****}";
+        return "Password[value=****]";
     }
 
 }

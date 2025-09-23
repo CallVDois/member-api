@@ -37,6 +37,7 @@ spring:
     password: ${postgres.password}
     url: jdbc:postgresql://${postgres.host}:${postgres.port}/${postgres.database}
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: none
     show-sql: ${db.show-sql}
