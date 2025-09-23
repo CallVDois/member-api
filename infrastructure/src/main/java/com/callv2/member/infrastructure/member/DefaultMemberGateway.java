@@ -78,9 +78,7 @@ public class DefaultMemberGateway implements MemberGateway {
     @Override
     @Transactional(readOnly = true)
     public Optional<Member> findById(final MemberID id) {
-        return this.memberJpaRepository
-                .findById(id.getValue())
-                .map(MemberJpaEntity::toDomain);
+        return _findById(id);
     }
 
     @Override
@@ -107,9 +105,10 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
+    @Transactional
     public Member update(final Member member) {
 
-        final Optional<Member> actualMember = findById(member.getId());
+        final Optional<Member> actualMember = _findById(member.getId());
 
         // These two filters need to be separates because of a division inside the
         // Keycloak API where a user's group needs to be updated separetely
@@ -122,6 +121,12 @@ public class DefaultMemberGateway implements MemberGateway {
                 .ifPresent(actMember -> performKeycloakUserGroupUpdate(member));
 
         return save(member);
+    }
+
+    private Optional<Member> _findById(final MemberID id) {
+        return this.memberJpaRepository
+                .findById(id.getValue())
+                .map(MemberJpaEntity::toDomain);
     }
 
     private Member save(final Member member) {
