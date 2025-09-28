@@ -1,6 +1,7 @@
 package com.callv2.member.infrastructure.api;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public interface MemberAdminAPI {
             @ApiResponse(responseCode = "404", description = "Member not found")
     })
     ResponseEntity<Void> toggleActive(
-            @PathVariable(value = "id", required = true) String id,
+            @PathVariable(value = "id", required = true) UUID id,
             @RequestParam(value = "active", defaultValue = "true") boolean active);
 
     @PutMapping("{id}/systems")
@@ -48,7 +49,7 @@ public interface MemberAdminAPI {
             @ApiResponse(responseCode = "404", description = "Member not found")
     })
     ResponseEntity<Void> updateAvailableSystems(
-            @PathVariable(value = "id", required = true) String id,
+            @PathVariable(value = "id", required = true) UUID id,
             @RequestBody UpdateMemberSystemsRequest request);
 
     @GetMapping("{id}")
@@ -57,7 +58,7 @@ public interface MemberAdminAPI {
             @ApiResponse(responseCode = "200", description = "Member account found", content = @Content(schema = @Schema(implementation = GetMemberResponse.class))),
             @ApiResponse(responseCode = "404", description = "Member not found")
     })
-    ResponseEntity<GetMemberResponse> get(@PathVariable(value = "id", required = true) String id);
+    ResponseEntity<GetMemberResponse> get(@PathVariable(value = "id", required = true) UUID id);
 
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
     @Operation(summary = "List members", description = "This method list files", security = @SecurityRequirement(name = "bearerAuth"))

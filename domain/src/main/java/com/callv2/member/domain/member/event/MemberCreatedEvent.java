@@ -3,6 +3,7 @@ package com.callv2.member.domain.member.event;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 import com.callv2.member.domain.event.Event;
 import com.callv2.member.domain.event.EventEntity;
@@ -27,7 +28,7 @@ public class MemberCreatedEvent extends Event<MemberCreatedEvent.Data> {
     }
 
     public record Data(
-            String id,
+            UUID id,
             String username,
             String email,
             String nickname,

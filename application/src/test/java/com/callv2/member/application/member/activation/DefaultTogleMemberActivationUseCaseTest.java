@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,7 +48,7 @@ public class DefaultTogleMemberActivationUseCaseTest {
     @Test
     void givenAnActiveTrueInput_whenCallsExecute_thenShouldActivateMember() {
 
-        final var expectedIdValue = "123";
+        final var expectedIdValue = UUID.randomUUID();
         final var expectedIsActive = true;
 
         final var expectedMemberId = MemberID.of(expectedIdValue);
@@ -113,7 +114,7 @@ public class DefaultTogleMemberActivationUseCaseTest {
     @Test
     void givenAnActiveFalseInput_whenCallsExecute_thenShouldDeactivateMember() {
 
-        final var expectedIdValue = "123";
+        final var expectedIdValue = UUID.randomUUID();
         final var expectedIsActive = false;
 
         final var expectedMemberId = MemberID.of(expectedIdValue);
@@ -179,14 +180,14 @@ public class DefaultTogleMemberActivationUseCaseTest {
     @Test
     void givenAnNonExistentMemberId_whenCallsExecute_thenShouldThrowsNotFoundException() {
 
-        final var expectedIdValue = "123";
+        final var expectedIdValue = UUID.randomUUID();
         final var expectedIsActive = false;
 
         final var expectedMemberId = MemberID.of(expectedIdValue);
 
-        final var expectedExceptionMessage = "Member with id '123' not found";
+        final var expectedExceptionMessage = "Member with id '%s' not found".formatted(expectedIdValue);
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "Member with id '123' not found";
+        final var expectedErrorMessage = "Member with id '%s' not found".formatted(expectedIdValue);
 
         final var input = TogleMemberActivationInput.of(expectedIdValue, expectedIsActive);
 
