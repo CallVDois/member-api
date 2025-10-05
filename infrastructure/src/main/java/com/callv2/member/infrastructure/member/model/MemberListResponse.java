@@ -1,9 +1,10 @@
 package com.callv2.member.infrastructure.member.model;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public record MemberListResponse(
-        String id,
+        UUID id,
         String username,
         String email,
         String nickname,

@@ -1,8 +1,10 @@
 package com.callv2.member.application.member.retrieve.get;
 
-public record GetMemberInput(String id) {
+import java.util.UUID;
 
-    public static GetMemberInput from(String id) {
+public record GetMemberInput(UUID id) {
+
+    public static GetMemberInput from(UUID id) {
         return new GetMemberInput(id);
     }
 

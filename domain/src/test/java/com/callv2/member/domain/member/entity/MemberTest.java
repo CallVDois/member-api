@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ public class MemberTest {
     @Test
     void givenAValidParams_whenCallsCreate_thenShouldCreateAMember() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("eser@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -55,7 +56,7 @@ public class MemberTest {
     @Test
     void givenAMemberWithNoAvailableSystems_whenCallsUpdateAvailableSystem_thenShouldAddTheSystem() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -97,7 +98,7 @@ public class MemberTest {
     @Test
     void givenAnAlreadyAvailableSystems_whenCallsUpdateAvailableSystem_thenShouldDoNothing() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -134,7 +135,7 @@ public class MemberTest {
     @Test
     void givenANullSystems_whenCallsUpdateAvailableSystem_thenShouldDoNothing() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -170,7 +171,7 @@ public class MemberTest {
     @Test
     void givenAEmptySystems_whenCallsUpdateAvailableSystems_thenShouldClearAvailableSystems() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -212,7 +213,7 @@ public class MemberTest {
     @Test
     void givenAnInactiveMember_whenCallsActivate_thenShouldActivateTheMember() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -253,7 +254,7 @@ public class MemberTest {
     @Test
     void givenAnActiveMember_whenCallsDeactivate_thenShouldInactivateTheMember() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -294,7 +295,7 @@ public class MemberTest {
     @Test
     void givenAnInactiveMember_whenCallsDeactivate_thenShouldDoNothing() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -331,7 +332,7 @@ public class MemberTest {
     @Test
     void givenAnActiveMember_whenCallsActivate_thenShouldDoNothing() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
