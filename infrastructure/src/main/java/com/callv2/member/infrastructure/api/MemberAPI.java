@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.callv2.member.infrastructure.api.controller.ApiError;
+import com.callv2.member.infrastructure.member.model.ChangeNicknameRequest;
 import com.callv2.member.infrastructure.member.model.CreateMemberRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,5 +30,14 @@ public interface MemberAPI {
             @ApiResponse(responseCode = "422", description = "Unprocessable entity", content = @Content(schema = @Schema(implementation = ApiError.class)))
     })
     ResponseEntity<Void> create(@RequestBody CreateMemberRequest request);
+
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @Operation(summary = "Change member nickname", description = "This method changes a member's nickname")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Created successfuly"),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ApiError.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable entity", content = @Content(schema = @Schema(implementation = ApiError.class)))
+    })
+    ResponseEntity<Void> changeNickname(@RequestBody ChangeNicknameRequest request);
 
 }

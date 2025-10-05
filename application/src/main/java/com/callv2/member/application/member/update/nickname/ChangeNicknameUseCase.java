@@ -1,7 +1,7 @@
 package com.callv2.member.application.member.update.nickname;
 
-import com.callv2.member.application.UnitUseCase;
+import com.callv2.member.application.UseCase;
 
-public abstract class ChangeNicknameUseCase extends UnitUseCase<ChangeNicknameInput> {
+public abstract class ChangeNicknameUseCase extends UseCase<ChangeNicknameInput, ChangeNicknameOutput> {
 
 }
