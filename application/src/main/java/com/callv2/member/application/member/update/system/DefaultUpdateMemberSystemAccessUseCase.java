@@ -26,7 +26,7 @@ public class DefaultUpdateMemberSystemAccessUseCase extends UpdateMemberSystemAc
 
         final Member member = memberGateway
                 .findById(MemberID.of(input.memberId()))
-                .orElseThrow(() -> NotFoundException.with(Member.class, input.memberId()));
+                .orElseThrow(() -> NotFoundException.with(Member.class, input.memberId().toString()));
 
         eventDispatcher.notify(memberGateway.update(member.updateAvailableSystems(input.systems())));
     }

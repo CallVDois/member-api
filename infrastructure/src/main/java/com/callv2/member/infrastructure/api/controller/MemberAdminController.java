@@ -1,6 +1,7 @@
 package com.callv2.member.infrastructure.api.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -45,19 +46,19 @@ public class MemberAdminController implements MemberAdminAPI {
     }
 
     @Override
-    public ResponseEntity<Void> toggleActive(final String id, final boolean active) {
+    public ResponseEntity<Void> toggleActive(final UUID id, final boolean active) {
         togleMemberActivationUseCase.execute(TogleMemberActivationInput.of(id, active));
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<Void> updateAvailableSystems(String id, UpdateMemberSystemsRequest request) {
+    public ResponseEntity<Void> updateAvailableSystems(UUID id, UpdateMemberSystemsRequest request) {
         updateMemberSystemAccessUseCase.execute(UpdateMemberSystemAccessInput.of(id, request.systems()));
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<GetMemberResponse> get(String id) {
+    public ResponseEntity<GetMemberResponse> get(UUID id) {
         return ResponseEntity.ok(MemberPresenter.present(getMemberUseCase.execute(GetMemberInput.from(id))));
     }
 

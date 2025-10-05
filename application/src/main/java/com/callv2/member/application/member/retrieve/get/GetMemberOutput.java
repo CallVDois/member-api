@@ -2,12 +2,13 @@ package com.callv2.member.application.member.retrieve.get;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 import com.callv2.member.domain.member.entity.Member;
 import com.callv2.member.domain.member.valueobject.System;
 
 public record GetMemberOutput(
-        String id,
+        UUID id,
         String username,
         String email,
         String nickname,

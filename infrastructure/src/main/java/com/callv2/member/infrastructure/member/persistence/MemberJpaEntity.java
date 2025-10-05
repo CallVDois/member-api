@@ -2,6 +2,7 @@ package com.callv2.member.infrastructure.member.persistence;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.callv2.member.domain.member.entity.Member;
@@ -23,7 +24,7 @@ import jakarta.persistence.Table;
 public class MemberJpaEntity {
 
     @Id
-    private String id;
+    private UUID id;
 
     private String username;
 
@@ -45,7 +46,7 @@ public class MemberJpaEntity {
     private Long synchronizedVersion;
 
     public MemberJpaEntity(
-            final String id,
+            final UUID id,
             final String username,
             final String nickname,
             final String email,
@@ -99,11 +100,11 @@ public class MemberJpaEntity {
                 member.getSynchronizedVersion());
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

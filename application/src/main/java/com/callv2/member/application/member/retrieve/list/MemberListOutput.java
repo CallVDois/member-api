@@ -1,11 +1,12 @@
 package com.callv2.member.application.member.retrieve.list;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import com.callv2.member.domain.member.entity.Member;
 
 public record MemberListOutput(
-        String id,
+        UUID id,
         String username,
         String email,
         String nickname,

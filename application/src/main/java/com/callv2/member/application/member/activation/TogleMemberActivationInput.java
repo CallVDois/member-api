@@ -1,8 +1,10 @@
 package com.callv2.member.application.member.activation;
 
-public record TogleMemberActivationInput(String memberId, Boolean active) {
+import java.util.UUID;
 
-    public static TogleMemberActivationInput of(String memberId, Boolean active) {
+public record TogleMemberActivationInput(UUID memberId, Boolean active) {
+
+    public static TogleMemberActivationInput of(UUID memberId, Boolean active) {
         return new TogleMemberActivationInput(memberId, active);
     }
 

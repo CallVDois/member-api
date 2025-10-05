@@ -144,7 +144,7 @@ public class DefaultMemberGateway implements MemberGateway {
 
     private void performKeycloakUserDataUpdate(final Member member) {
         this.tokenKeycloakUserService
-                .updateUser(member.getId().getValue(), keycloakUserMapper.toUserRepresentation(member));
+                .updateUser(member.getId().getStringValue(), keycloakUserMapper.toUserRepresentation(member));
     }
 
     private boolean needsKeycloakUserGroupUpdate(final Member actualMember, final Member newMember) {
@@ -152,7 +152,7 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     private void performKeycloakUserGroupUpdate(final Member member) {
-        final String userId = member.getId().getValue();
+        final String userId = member.getId().getStringValue();
         final Set<String> newUserGroupsPaths = this.keycloakGroupMapper.toGroupPaths(member.getAvailableSystems());
 
         final List<String> newUserGroupIds = newUserGroupsPaths
