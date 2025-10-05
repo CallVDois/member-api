@@ -1,6 +1,7 @@
 package com.callv2.member.infrastructure.api.controller;
 
 import java.net.URI;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import com.callv2.member.infrastructure.api.MemberAPI;
 import com.callv2.member.infrastructure.member.adapter.MemberAdapter;
 import com.callv2.member.infrastructure.member.model.ChangeNicknameRequest;
 import com.callv2.member.infrastructure.member.model.CreateMemberRequest;
+import com.callv2.member.infrastructure.security.SecurityContext;
 
 @Controller
 public class MemberController implements MemberAPI {
@@ -34,9 +36,10 @@ public class MemberController implements MemberAPI {
 
     @Override
     public ResponseEntity<Void> changeNickname(final ChangeNicknameRequest request) {
-        changeNicknameUseCase.execute(MemberAdapter.adapt(request));
+        final UUID memberId = SecurityContext.getAuthenticatedUser();
+        changeNicknameUseCase.execute(MemberAdapter.adapt(memberId, request));
         return ResponseEntity
-                .created(URI.create("/members/change-nickname/" + request.memberId()))
+                .noContent()
                 .build();
     }
 
