@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 
 import com.callv2.member.application.member.create.CreateMemberUseCase;
 import com.callv2.member.application.member.update.nickname.ChangeNicknameUseCase;
-import com.callv2.member.application.member.update.nickname.DefaultChangeNicknameUseCase;
 import com.callv2.member.infrastructure.api.MemberAPI;
 import com.callv2.member.infrastructure.member.adapter.MemberAdapter;
 import com.callv2.member.infrastructure.member.model.ChangeNicknameRequest;
@@ -21,7 +20,7 @@ public class MemberController implements MemberAPI {
 
     public MemberController(
             final CreateMemberUseCase createMemberUseCase,
-            final DefaultChangeNicknameUseCase changeNicknameUseCase) {
+            final ChangeNicknameUseCase changeNicknameUseCase) {
         this.createMemberUseCase = createMemberUseCase;
         this.changeNicknameUseCase = changeNicknameUseCase;
     }
