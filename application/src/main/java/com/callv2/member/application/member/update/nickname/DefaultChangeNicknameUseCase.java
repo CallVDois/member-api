@@ -41,7 +41,7 @@ public class DefaultChangeNicknameUseCase extends ChangeNicknameUseCase {
 
         member.changeNickname(nickname);
         
-        this.eventDispatcher.notify(member);
+        this.eventDispatcher.notify(this.memberGateway.update(member));
 
         return ChangeNicknameOutput.with(member.getId().getValue());
     }
