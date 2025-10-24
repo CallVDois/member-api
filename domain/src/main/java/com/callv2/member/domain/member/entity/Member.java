@@ -10,6 +10,7 @@ import java.util.Set;
 import com.callv2.member.domain.AggregateRoot;
 import com.callv2.member.domain.event.Event;
 import com.callv2.member.domain.event.EventSource;
+import com.callv2.member.domain.exception.ValidationException;
 import com.callv2.member.domain.member.event.MemberCreatedEvent;
 import com.callv2.member.domain.member.event.MemberUpdatedEvent;
 import com.callv2.member.domain.member.validation.MemberValidator;
@@ -18,10 +19,11 @@ import com.callv2.member.domain.member.valueobject.Nickname;
 import com.callv2.member.domain.member.valueobject.System;
 import com.callv2.member.domain.member.valueobject.Username;
 import com.callv2.member.domain.validation.ValidationHandler;
+import com.callv2.member.domain.validation.handler.Notification;
 
 public class Member extends AggregateRoot<MemberID> implements EventSource {
 
-    private Queue<Event<?>> events;
+    private final Queue<Event<?>> events;
 
     private Username username;
     private Email email;
@@ -140,6 +142,23 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
         this.events.add(MemberUpdatedEvent.create(this));
         return this;
     }
+
+    public Member changeNickname(final Nickname nickname) {
+        if (this.nickname.equals(nickname))
+            return this;
+
+        Notification notification = Notification.create();
+        nickname.validate(notification);
+        if (notification.hasError()) {
+            throw ValidationException.with("Error on changing nickname.", notification);
+        }
+
+        this.nickname = nickname;
+        this.updatedAt = Instant.now();
+        this.synchronizedVersion++;
+        this.events.add(MemberUpdatedEvent.create(this));
+        return this;
+    } 
 
     public Username getUsername() {
         return username;
