@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import com.callv2.member.application.member.create.CreateMemberUseCase;
-import com.callv2.member.application.member.update.nickname.ChangeNicknameUseCase;
+import com.callv2.member.application.member.update.nickname.UpdateNicknameUseCase;
 import com.callv2.member.infrastructure.api.MemberAPI;
 import com.callv2.member.infrastructure.member.adapter.MemberAdapter;
-import com.callv2.member.infrastructure.member.model.ChangeNicknameRequest;
+import com.callv2.member.infrastructure.member.model.UpdateNicknameRequest;
 import com.callv2.member.infrastructure.member.model.CreateMemberRequest;
 import com.callv2.member.infrastructure.security.SecurityContext;
 
@@ -18,13 +18,13 @@ import com.callv2.member.infrastructure.security.SecurityContext;
 public class MemberController implements MemberAPI {
 
     private final CreateMemberUseCase createMemberUseCase;
-    private final ChangeNicknameUseCase changeNicknameUseCase;
+    private final UpdateNicknameUseCase updateNicknameUseCase;
 
     public MemberController(
             final CreateMemberUseCase createMemberUseCase,
-            final ChangeNicknameUseCase changeNicknameUseCase) {
+            final UpdateNicknameUseCase updateNicknameUseCase) {
         this.createMemberUseCase = createMemberUseCase;
-        this.changeNicknameUseCase = changeNicknameUseCase;
+        this.updateNicknameUseCase = updateNicknameUseCase;
     }
 
     @Override
@@ -35,9 +35,9 @@ public class MemberController implements MemberAPI {
     }
 
     @Override
-    public ResponseEntity<Void> changeNickname(final ChangeNicknameRequest request) {
+    public ResponseEntity<Void> updateNickname(final UpdateNicknameRequest request) {
         final UUID memberId = SecurityContext.getAuthenticatedUser();
-        changeNicknameUseCase.execute(MemberAdapter.adapt(memberId, request));
+        updateNicknameUseCase.execute(MemberAdapter.adapt(memberId, request));
         return ResponseEntity
                 .noContent()
                 .build();

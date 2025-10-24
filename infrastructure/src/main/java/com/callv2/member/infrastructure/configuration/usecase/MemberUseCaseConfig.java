@@ -13,8 +13,8 @@ import com.callv2.member.application.member.retrieve.get.DefaultGetMemberUseCase
 import com.callv2.member.application.member.retrieve.get.GetMemberUseCase;
 import com.callv2.member.application.member.retrieve.list.DefaultListMembersUseCase;
 import com.callv2.member.application.member.retrieve.list.ListMembersUseCase;
-import com.callv2.member.application.member.update.nickname.ChangeNicknameUseCase;
-import com.callv2.member.application.member.update.nickname.DefaultChangeNicknameUseCase;
+import com.callv2.member.application.member.update.nickname.UpdateNicknameUseCase;
+import com.callv2.member.application.member.update.nickname.DefaultUpdateNicknameUseCase;
 import com.callv2.member.application.member.update.system.DefaultUpdateMemberSystemAccessUseCase;
 import com.callv2.member.application.member.update.system.UpdateMemberSystemAccessUseCase;
 import com.callv2.member.domain.event.EventDispatcher;
@@ -59,8 +59,8 @@ public class MemberUseCaseConfig {
     }
 
     @Bean
-    ChangeNicknameUseCase changeNicknameUseCase() {
-        return new DefaultChangeNicknameUseCase(memberGateway, eventDispatcher);
+    UpdateNicknameUseCase updateNicknameUseCase() {
+        return new DefaultUpdateNicknameUseCase(memberGateway, eventDispatcher);
     }
 
 }

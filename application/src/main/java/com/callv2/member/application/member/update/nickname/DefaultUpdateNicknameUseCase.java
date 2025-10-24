@@ -11,12 +11,12 @@ import com.callv2.member.domain.member.gateway.MemberGateway;
 import com.callv2.member.domain.member.valueobject.Nickname;
 import com.callv2.member.domain.validation.handler.Notification;
 
-public class DefaultChangeNicknameUseCase extends ChangeNicknameUseCase {
+public class DefaultUpdateNicknameUseCase extends UpdateNicknameUseCase {
 
     private final MemberGateway memberGateway;
     private final EventDispatcher eventDispatcher;
 
-    public DefaultChangeNicknameUseCase(
+    public DefaultUpdateNicknameUseCase(
             final MemberGateway memberGateway,
             final EventDispatcher eventDispatcher) {
         this.memberGateway = Objects.requireNonNull(memberGateway);
@@ -24,7 +24,7 @@ public class DefaultChangeNicknameUseCase extends ChangeNicknameUseCase {
     }
 
     @Override
-    public ChangeNicknameOutput execute(final ChangeNicknameInput input) {
+    public void execute(final UpdateNicknameInput input) {
 
         final MemberID memberId = MemberID.of(input.memberId());
         final Nickname nickname = Nickname.of(input.nickname());
@@ -42,7 +42,5 @@ public class DefaultChangeNicknameUseCase extends ChangeNicknameUseCase {
         member.changeNickname(nickname);
         
         this.eventDispatcher.notify(this.memberGateway.update(member));
-
-        return ChangeNicknameOutput.with(member.getId().getValue());
     }
 }

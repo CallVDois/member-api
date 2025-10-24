@@ -1,5 +1,5 @@
 package com.callv2.member.infrastructure.member.model;
 
-public record ChangeNicknameRequest(String nickname) {
+public record UpdateNicknameRequest(String nickname) {
 
 }
