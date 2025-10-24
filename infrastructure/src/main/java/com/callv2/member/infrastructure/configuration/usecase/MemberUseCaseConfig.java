@@ -13,6 +13,8 @@ import com.callv2.member.application.member.retrieve.get.DefaultGetMemberUseCase
 import com.callv2.member.application.member.retrieve.get.GetMemberUseCase;
 import com.callv2.member.application.member.retrieve.list.DefaultListMembersUseCase;
 import com.callv2.member.application.member.retrieve.list.ListMembersUseCase;
+import com.callv2.member.application.member.update.nickname.UpdateNicknameUseCase;
+import com.callv2.member.application.member.update.nickname.DefaultUpdateNicknameUseCase;
 import com.callv2.member.application.member.update.system.DefaultUpdateMemberSystemAccessUseCase;
 import com.callv2.member.application.member.update.system.UpdateMemberSystemAccessUseCase;
 import com.callv2.member.domain.event.EventDispatcher;
@@ -54,6 +56,11 @@ public class MemberUseCaseConfig {
     @Bean
     UpdateMemberSystemAccessUseCase updateMemberSystemAccessUseCase() {
         return new DefaultUpdateMemberSystemAccessUseCase(memberGateway, eventDispatcher);
+    }
+
+    @Bean
+    UpdateNicknameUseCase updateNicknameUseCase() {
+        return new DefaultUpdateNicknameUseCase(memberGateway, eventDispatcher);
     }
 
 }

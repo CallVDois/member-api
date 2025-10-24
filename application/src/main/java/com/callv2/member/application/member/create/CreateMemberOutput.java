@@ -1,8 +1,10 @@
 package com.callv2.member.application.member.create;
 
-public record CreateMemberOutput(String id) {
+import java.util.UUID;
 
-    public static CreateMemberOutput with(String id) {
+public record CreateMemberOutput(UUID id) {
+
+    public static CreateMemberOutput with(UUID id) {
         return new CreateMemberOutput(id);
     }
 

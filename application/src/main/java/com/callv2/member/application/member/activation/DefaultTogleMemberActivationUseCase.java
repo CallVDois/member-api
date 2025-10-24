@@ -26,7 +26,7 @@ public class DefaultTogleMemberActivationUseCase extends TogleMemberActivationUs
 
         final Member member = memberGateway
                 .findById(MemberID.of(input.memberId()))
-                .orElseThrow(() -> NotFoundException.with(Member.class, input.memberId()));
+                .orElseThrow(() -> NotFoundException.with(Member.class, input.memberId().toString()));
 
         if (input.active())
             member.activate();

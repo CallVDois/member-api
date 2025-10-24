@@ -16,6 +16,7 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,7 +52,7 @@ public class DefaultUpdateMemberSystemAccessUseCaseTest {
     @Test
     void givenAValidParams_whenCallsExecute_thenShouldUpdateMemberSystemAccess() {
 
-        final var expectedId = "123";
+        final var expectedId = UUID.randomUUID();
         final var expectedSystems = Set.of(System.DRIVE, System.MEMBER);
 
         final var expectedMemberId = MemberID.of(expectedId);
@@ -70,7 +71,8 @@ public class DefaultUpdateMemberSystemAccessUseCaseTest {
                 expectIsActive,
                 Set.of(),
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         assertTrue(expectedMember.nextEvent().isEmpty());
         assertTrue(expectedMember.getAvailableSystems().isEmpty());
@@ -111,11 +113,11 @@ public class DefaultUpdateMemberSystemAccessUseCaseTest {
     @Test
     void givenAnNonExistentMemberId_whenCallsExecute_thenShouldThrowsNotFoundException() {
 
-        final var expectedId = "123";
+        final var expectedId = UUID.randomUUID();
         final var expectedSystems = Set.of(System.DRIVE, System.MEMBER);
         final var expectedMemberId = MemberID.of(expectedId);
-        final var expectedExceptionMessage = "Member with id '123' not found";
-        final var expectedErrorMessage = "Member with id '123' not found";
+        final var expectedExceptionMessage = "Member with id '%s' not found".formatted(expectedId);
+        final var expectedErrorMessage = "Member with id '%s' not found".formatted(expectedId);
         final var expectedErrorCount = 1;
 
         when(memberGateway.findById(expectedMemberId))

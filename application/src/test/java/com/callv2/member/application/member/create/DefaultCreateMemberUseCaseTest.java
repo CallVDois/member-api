@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,7 +63,7 @@ public class DefaultCreateMemberUseCaseTest {
                 expectedEmail,
                 expectedPassword);
 
-        final var expectedMemberId = MemberID.of("123");
+        final var expectedMemberId = MemberID.of(UUID.randomUUID());
         final var expectedIsActive = false;
         final var expectedAvailableSystems = Set.<System>of();
         final var expectedCreateAt = Instant.now();
@@ -76,7 +77,8 @@ public class DefaultCreateMemberUseCaseTest {
                 expectedIsActive,
                 expectedAvailableSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         when(memberGateway.create(eq(expectedPreMember)))
                 .thenReturn(expectedMember);

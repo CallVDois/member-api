@@ -20,4 +20,14 @@ public record CredentialRepresentation(
         Integer period,
         AllOfCredentialRepresentationConfig config) {
 
+    @Override
+    public String toString() {
+        return "CredentialRepresentation [id=" + id + ", type=" + type + ", userLabel=" + userLabel + ", createdDate="
+                + createdDate + ", secretData=" + secretData + ", credentialData=" + credentialData + ", priority="
+                + priority + ", value=" + "****" + ", temporary=" + temporary + ", device=" + device
+                + ", hashedSaltedValue=" + hashedSaltedValue + ", salt=" + salt + ", hashIterations="
+                + hashIterations + ", counter=" + counter + ", algorithm=" + algorithm + ", digits=" + digits
+                + ", period=" + period + ", config=" + config + "]";
+    }
+
 }

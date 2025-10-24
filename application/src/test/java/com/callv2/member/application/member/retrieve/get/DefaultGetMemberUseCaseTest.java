@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +41,7 @@ public class DefaultGetMemberUseCaseTest {
     @Test
     void givenAnExistentMemberId_whenCallsExecute_thenShouldReturnMember() {
 
-        final var expectedIdValue = "123";
+        final var expectedIdValue = UUID.randomUUID();
         final var expectedMemberId = MemberID.of(expectedIdValue);
         final var expectedUsername = Username.of("username");
         final var expectedEmail = Email.of("email@eail.com");
@@ -58,7 +59,8 @@ public class DefaultGetMemberUseCaseTest {
                 expectedIsActive,
                 expectedAvailableSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         when(memberGateway.findById(eq(expectedMemberId)))
                 .thenReturn(Optional.of(expectedMember));
@@ -82,12 +84,12 @@ public class DefaultGetMemberUseCaseTest {
     @Test
     void givenAnNonExistentMemberId_whenCallsExecute_thenShouldThorwsNotFoundException() {
 
-        final var expectedIdValue = "123";
+        final var expectedIdValue = UUID.randomUUID();
         final var expectedMemberId = MemberID.of(expectedIdValue);
 
-        final var expectedExceptionMessage = "Member with id '123' not found";
+        final var expectedExceptionMessage = "Member with id '%s' not found".formatted(expectedIdValue);
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "Member with id '123' not found";
+        final var expectedErrorMessage = "Member with id '%s' not found".formatted(expectedIdValue);
 
         when(memberGateway.findById(eq(expectedMemberId)))
                 .thenReturn(Optional.empty());

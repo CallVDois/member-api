@@ -20,7 +20,7 @@ public class DefaultGetMemberUseCase extends GetMemberUseCase {
         return memberGateway
                 .findById(MemberID.of(input.id()))
                 .map(GetMemberOutput::from)
-                .orElseThrow(() -> NotFoundException.with(Member.class, input.id()));
+                .orElseThrow(() -> NotFoundException.with(Member.class, input.id().toString()));
     }
 
 }

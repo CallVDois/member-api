@@ -1,43 +1,48 @@
 package com.callv2.member.infrastructure.configuration.keycloak;
 
-import java.util.function.Consumer;
-
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.web.client.RestClient;
 
-import com.callv2.member.infrastructure.external.keycloak.service.KeycloakUserService;
+import com.callv2.member.infrastructure.configuration.security.OAuth2BearerTokenInterceptor;
+import com.callv2.member.infrastructure.configuration.security.OAuth2ClientTokenInterceptor;
 
 @Configuration
 public class ClientConfig {
 
-    @Bean
-    KeycloakUserService userService(
-            @Qualifier("keycloakWebClientClientCredentials") final WebClient webClient,
-            @Value("${keycloak.realm}") final String realm) {
-        return new KeycloakUserService(webClient, realm);
+    private static final String CLIENT_REGISTRATION_ID = "keycloak";
+
+    private final OAuth2AuthorizedClientManager authorizedClientManager;
+
+    public ClientConfig(final OAuth2AuthorizedClientManager authorizedClientManager) {
+        this.authorizedClientManager = authorizedClientManager;
     }
 
-    @Bean(name = "keycloakWebClientClientCredentials")
-    WebClient keycloakWebClientClientCredentials(
-            @Qualifier("keycloakOauth2Client") final ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2Client,
+    @Bean("keycloakRestClientClientCredentials")
+    RestClient keycloakRestClientClientCredentials(
             @Value("${keycloak.host}") final String host) {
-        return WebClient.builder()
+
+        final var oAuth2ClientTokenInterceptor = new OAuth2ClientTokenInterceptor(
+                authorizedClientManager,
+                CLIENT_REGISTRATION_ID);
+
+        return RestClient
+                .builder()
                 .baseUrl(host)
-                .apply(oauth2Client.oauth2Configuration())
+                .requestInterceptor(oAuth2ClientTokenInterceptor)
                 .build();
     }
 
-    @Bean(name = "keycloakWebClientToken")
-    WebClient keycloakWebClientToken(
-            @Qualifier("oauth2BearerTokenFilter") final Consumer<WebClient.Builder> oauth2Client,
+    @Bean("keycloakRestClientBearerToken")
+    RestClient keycloakRestClientBearerToken(
+            OAuth2BearerTokenInterceptor oauth2BearerTokenInterceptor,
             @Value("${keycloak.host}") final String host) {
-        return WebClient.builder()
+        return RestClient
+                .builder()
                 .baseUrl(host)
-                .apply(oauth2Client)
+                .requestInterceptor(oauth2BearerTokenInterceptor)
                 .build();
     }
 

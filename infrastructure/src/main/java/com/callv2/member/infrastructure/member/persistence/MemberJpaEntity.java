@@ -2,6 +2,7 @@ package com.callv2.member.infrastructure.member.persistence;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.callv2.member.domain.member.entity.Member;
@@ -23,7 +24,7 @@ import jakarta.persistence.Table;
 public class MemberJpaEntity {
 
     @Id
-    private String id;
+    private UUID id;
 
     private String username;
 
@@ -42,15 +43,18 @@ public class MemberJpaEntity {
 
     private Instant updatedAt;
 
+    private Long synchronizedVersion;
+
     public MemberJpaEntity(
-            final String id,
+            final UUID id,
             final String username,
             final String nickname,
             final String email,
             final Boolean active,
             final Set<SystemJpaEntity> systems,
             final Instant createdAt,
-            final Instant updatedAt) {
+            final Instant updatedAt,
+            final Long synchronizedVersion) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
@@ -59,6 +63,7 @@ public class MemberJpaEntity {
         this.systems = systems;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.synchronizedVersion = synchronizedVersion;
     }
 
     public MemberJpaEntity() {
@@ -75,7 +80,8 @@ public class MemberJpaEntity {
                         .map(SystemJpaEntity::toDomain)
                         .collect(Collectors.toSet()),
                 getCreatedAt(),
-                getUpdatedAt());
+                getUpdatedAt(),
+                getSynchronizedVersion());
     }
 
     public static MemberJpaEntity fromDomain(final Member member) {
@@ -90,14 +96,15 @@ public class MemberJpaEntity {
                         .map(SystemJpaEntity::fromDomain)
                         .collect(Collectors.toSet()),
                 member.getCreatedAt(),
-                member.getUpdatedAt());
+                member.getUpdatedAt(),
+                member.getSynchronizedVersion());
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -155,6 +162,14 @@ public class MemberJpaEntity {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getSynchronizedVersion() {
+        return synchronizedVersion;
+    }
+
+    public void setSynchronizedVersion(Long synchronizedVersion) {
+        this.synchronizedVersion = synchronizedVersion;
     }
 
 }

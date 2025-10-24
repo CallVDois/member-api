@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,24 +43,26 @@ public class DefaultListMembersUseCaseTest {
     void givenAValidSearchQuery_whenCallsExecute_thenShouldReturnMembers() {
 
         final var expectedMember1 = Member.with(
-                MemberID.of("1"),
+                MemberID.of(UUID.randomUUID()),
                 Username.of("user1"),
                 Email.of("email1@email.com"),
                 Nickname.of("nickname1"),
                 true,
                 Set.of(System.DRIVE, System.MEMBER),
                 Instant.now(),
-                Instant.now());
+                Instant.now(),
+                0L);
 
         final var expectedMember2 = Member.with(
-                MemberID.of("2"),
+                MemberID.of(UUID.randomUUID()),
                 Username.of("user2"),
                 Email.of("email2@email.com"),
                 Nickname.of("nickname2"),
                 true,
                 Set.of(System.DRIVE),
                 Instant.now(),
-                Instant.now());
+                Instant.now(),
+                0L);
 
         final var expectedMembers = List.of(expectedMember1, expectedMember2);
 

@@ -10,6 +10,7 @@ import java.util.Set;
 import com.callv2.member.domain.AggregateRoot;
 import com.callv2.member.domain.event.Event;
 import com.callv2.member.domain.event.EventSource;
+import com.callv2.member.domain.exception.ValidationException;
 import com.callv2.member.domain.member.event.MemberCreatedEvent;
 import com.callv2.member.domain.member.event.MemberUpdatedEvent;
 import com.callv2.member.domain.member.validation.MemberValidator;
@@ -18,10 +19,11 @@ import com.callv2.member.domain.member.valueobject.Nickname;
 import com.callv2.member.domain.member.valueobject.System;
 import com.callv2.member.domain.member.valueobject.Username;
 import com.callv2.member.domain.validation.ValidationHandler;
+import com.callv2.member.domain.validation.handler.Notification;
 
 public class Member extends AggregateRoot<MemberID> implements EventSource {
 
-    private Queue<Event<?>> events;
+    private final Queue<Event<?>> events;
 
     private Username username;
     private Email email;
@@ -34,6 +36,8 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
     private Instant createdAt;
     private Instant updatedAt;
 
+    private Long synchronizedVersion;
+
     private Member(
             final MemberID id,
             final Username username,
@@ -42,7 +46,8 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
             final boolean active,
             final Set<System> availableSystems,
             final Instant createdAt,
-            final Instant updatedAt) {
+            final Instant updatedAt,
+            final Long synchronizedVersion) {
         super(id);
         this.username = username;
         this.email = email;
@@ -53,6 +58,8 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
 
         this.availableSystems = availableSystems != null ? new HashSet<>(availableSystems) : new HashSet<>();
         this.events = new LinkedList<>();
+
+        this.synchronizedVersion = synchronizedVersion != null ? synchronizedVersion : 0L;
     }
 
     public static Member create(
@@ -63,8 +70,8 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
 
         final Instant now = Instant.now();
 
-        final Member member = new Member(id, username, email, nickname, false, new HashSet<>(), now, now);
-        member.events.add(MemberCreatedEvent.create("MemberAggregate", MemberCreatedEvent.Data.of(member)));
+        final Member member = new Member(id, username, email, nickname, false, new HashSet<>(), now, now, 0L);
+        member.events.add(MemberCreatedEvent.create(member));
         return member;
     }
 
@@ -76,8 +83,18 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
             final boolean active,
             final Set<System> availableSystems,
             final Instant createdAt,
-            final Instant updatedAt) {
-        return new Member(id, username, email, nickname, active, availableSystems, createdAt, updatedAt);
+            final Instant updatedAt,
+            final Long synchronizedVersion) {
+        return new Member(
+                id,
+                username,
+                email,
+                nickname,
+                active,
+                availableSystems,
+                createdAt,
+                updatedAt,
+                synchronizedVersion);
     }
 
     @Override
@@ -97,7 +114,8 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
 
         this.active = true;
         this.updatedAt = Instant.now();
-        this.events.add(MemberUpdatedEvent.create("MemberAggregate", MemberUpdatedEvent.Data.of(this)));
+        this.synchronizedVersion++;
+        this.events.add(MemberUpdatedEvent.create(this));
         return this;
     }
 
@@ -108,7 +126,8 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
 
         this.active = false;
         this.updatedAt = Instant.now();
-        this.events.add(MemberUpdatedEvent.create("MemberAggregate", MemberUpdatedEvent.Data.of(this)));
+        this.synchronizedVersion++;
+        this.events.add(MemberUpdatedEvent.create(this));
         return this;
     }
 
@@ -119,9 +138,27 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
         this.availableSystems.clear();
         this.availableSystems.addAll(systems);
         this.updatedAt = Instant.now();
-        this.events.add(MemberUpdatedEvent.create("MemberAggregate", MemberUpdatedEvent.Data.of(this)));
+        this.synchronizedVersion++;
+        this.events.add(MemberUpdatedEvent.create(this));
         return this;
     }
+
+    public Member changeNickname(final Nickname nickname) {
+        if (this.nickname.equals(nickname))
+            return this;
+
+        Notification notification = Notification.create();
+        nickname.validate(notification);
+        if (notification.hasError()) {
+            throw ValidationException.with("Error on changing nickname.", notification);
+        }
+
+        this.nickname = nickname;
+        this.updatedAt = Instant.now();
+        this.synchronizedVersion++;
+        this.events.add(MemberUpdatedEvent.create(this));
+        return this;
+    } 
 
     public Username getUsername() {
         return username;
@@ -149,6 +186,17 @@ public class Member extends AggregateRoot<MemberID> implements EventSource {
 
     public Instant getUpdatedAt() {
         return updatedAt;
+    }
+
+    public Long getSynchronizedVersion() {
+        return synchronizedVersion;
+    }
+
+    @Override
+    public String toString() {
+        return "Member [id=" + id + ", username=" + username + ", email=" + email + ", nickname=" + nickname
+                + ", availableSystems=" + availableSystems + ", active=" + active + ", createdAt=" + createdAt
+                + ", updatedAt=" + updatedAt + ", synchronizedVersion=" + synchronizedVersion + "]";
     }
 
 }

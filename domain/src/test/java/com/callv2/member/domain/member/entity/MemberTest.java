@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,13 +23,12 @@ public class MemberTest {
     @Test
     void givenAValidParams_whenCallsCreate_thenShouldCreateAMember() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("eser@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
 
         final var expectedEventType = MemberCreatedEvent.class;
-        final var expectedEventSource = "MemberAggregate";
 
         final var actualMember = assertDoesNotThrow(() -> Member.create(
                 expectedId,
@@ -47,8 +47,7 @@ public class MemberTest {
         final var createdEvent = actualMember.nextEvent();
         assertTrue(createdEvent.isPresent());
         assertEquals(expectedEventType, createdEvent.get().getClass());
-        assertEquals(expectedEventSource, createdEvent.get().source());
-        assertEquals(MemberCreatedEvent.Data.of(actualMember), createdEvent.get().data());
+        assertEquals(MemberCreatedEvent.Data.of(actualMember), createdEvent.get().getData());
 
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent(), "There should be no more events after the first one");
@@ -57,7 +56,7 @@ public class MemberTest {
     @Test
     void givenAMemberWithNoAvailableSystems_whenCallsUpdateAvailableSystem_thenShouldAddTheSystem() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -71,7 +70,8 @@ public class MemberTest {
                 false,
                 Set.of(),
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var expectedSystems = Set.of(System.DRIVE);
 
@@ -90,8 +90,7 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals("MemberAggregate", updatedEvent.get().source());
-        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().getData());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
     }
@@ -99,7 +98,7 @@ public class MemberTest {
     @Test
     void givenAnAlreadyAvailableSystems_whenCallsUpdateAvailableSystem_thenShouldDoNothing() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -114,7 +113,8 @@ public class MemberTest {
                 false,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var inputSystems = Set.of(System.DRIVE);
         final var actualMember = assertDoesNotThrow(() -> expectedMember.updateAvailableSystems(inputSystems));
@@ -135,7 +135,7 @@ public class MemberTest {
     @Test
     void givenANullSystems_whenCallsUpdateAvailableSystem_thenShouldDoNothing() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -150,7 +150,8 @@ public class MemberTest {
                 false,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.updateAvailableSystems(null));
 
@@ -170,7 +171,7 @@ public class MemberTest {
     @Test
     void givenAEmptySystems_whenCallsUpdateAvailableSystems_thenShouldClearAvailableSystems() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -185,7 +186,8 @@ public class MemberTest {
                 false,
                 Set.of(System.DRIVE, System.MEMBER),
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var input = Set.<System>of();
         final var actualMember = assertDoesNotThrow(() -> expectedMember.updateAvailableSystems(input));
@@ -203,8 +205,7 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals("MemberAggregate", updatedEvent.get().source());
-        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().getData());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
     }
@@ -212,7 +213,7 @@ public class MemberTest {
     @Test
     void givenAnInactiveMember_whenCallsActivate_thenShouldActivateTheMember() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -228,7 +229,8 @@ public class MemberTest {
                 false,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.activate());
 
@@ -244,8 +246,7 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals("MemberAggregate", updatedEvent.get().source());
-        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().getData());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
     }
@@ -253,7 +254,7 @@ public class MemberTest {
     @Test
     void givenAnActiveMember_whenCallsDeactivate_thenShouldInactivateTheMember() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -269,7 +270,8 @@ public class MemberTest {
                 true,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.deactivate());
 
@@ -285,8 +287,7 @@ public class MemberTest {
         final var updatedEvent = actualMember.nextEvent();
         assertTrue(updatedEvent.isPresent());
         assertEquals(MemberUpdatedEvent.class, updatedEvent.get().getClass());
-        assertEquals("MemberAggregate", updatedEvent.get().source());
-        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().data());
+        assertEquals(MemberUpdatedEvent.Data.of(actualMember), updatedEvent.get().getData());
         final var anotherEvent = actualMember.nextEvent();
         assertFalse(anotherEvent.isPresent());
     }
@@ -294,7 +295,7 @@ public class MemberTest {
     @Test
     void givenAnInactiveMember_whenCallsDeactivate_thenShouldDoNothing() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -310,7 +311,8 @@ public class MemberTest {
                 false,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.deactivate());
 
@@ -330,7 +332,7 @@ public class MemberTest {
     @Test
     void givenAnActiveMember_whenCallsActivate_thenShouldDoNothing() {
 
-        final var expectedId = MemberID.of("123");
+        final var expectedId = MemberID.of(UUID.randomUUID());
         final var expectedUsername = Username.of("user");
         final var expectedEmail = Email.of("email@email.com");
         final var expectedNickname = Nickname.of("user_nickname");
@@ -346,7 +348,8 @@ public class MemberTest {
                 true,
                 expectedSystems,
                 expectedCreateAt,
-                expectedUpdatedAt);
+                expectedUpdatedAt,
+                0L);
 
         final var actualMember = assertDoesNotThrow(() -> expectedMember.activate());
 
